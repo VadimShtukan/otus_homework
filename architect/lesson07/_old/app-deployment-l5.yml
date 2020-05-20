@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vadim-shtukan-l5
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vadim-shtukan-l5-app
+  template:
+    metadata:
+      labels:
+        app: vadim-shtukan-l5-app
+    spec:
+      containers:
+        - name: vadim-shtukan-l5
+          image: vadimshtukan/otus-sa-l5:0.0.3
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: l5-config-secret
+                  key: spring.datasource.password
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: l5-config-secret
+                  key: spring.datasource.username
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: l5-config
+                  key: spring.datasource.url
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 40
+            periodSeconds: 10
+

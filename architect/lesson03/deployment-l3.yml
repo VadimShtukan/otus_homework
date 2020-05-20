@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vadim-shtukan-l3
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vadim-shtukan-l3-app
+  template:
+    metadata:
+      labels:
+        app: vadim-shtukan-l3-app
+    spec:
+      containers:
+        - name: vadim-shtukan-l3
+          image: vadimshtukan/otus-sa-l3:0.0.3
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /version
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+

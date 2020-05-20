@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vadim-shtukan-l7-stresstes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vadim-shtukan-l7-stresstes-app
+  template:
+    metadata:
+      labels:
+        app: vadim-shtukan-l7-stresstes-app
+    spec:
+      containers:
+        - name: vadim-shtukan-l7-stresstes
+          image: vadimshtukan/otus-sa-l7-stresstest:0.0.2
+          env:
+            - name: URL_FOR_SCAN
+              value: "http://otus-sa-vadimshtukan-chart-service:80/otusapp"
+            - name: RATE_SCAN
+              value: "10000"

@@ -1,0 +1,29 @@
+# Default values for lesson7-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+    repository: vadimshtukan/otus-sa-l5
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8000
+
+externalMySql:
+#  username: cm9vdA==
+  username: root
+
+ingress:
+  enabled: true
+  host: arch.homework
+
+mysql:
+  imageTag: 5.7.9
+  #  password: cDEyMzQ1Ng==
+  mysqlRootPassword: p123456
+  mysqlDatabase: otus_vadim_shtukan_db
+  persistence:
+    size: 200Mi

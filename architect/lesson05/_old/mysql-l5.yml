@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-l5
+  labels:
+    app: mysql-l5
+spec:
+  type: NodePort
+  ports:
+    - port: 3306
+  selector:
+    app: mysql #strong name mysql
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-l5-statefulset
+spec:
+  serviceName: "postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-l5
+  template:
+    metadata:
+      labels:
+        app: mysql-l5
+    spec:
+      containers:
+        - name: mysql-l5
+          image: library/mysql:5.7.9
+          ports:
+            - containerPort: 3306
+              name: mysql-l5-db
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: p123456
+          volumeMounts:
+            - name: mysql-l5-db
+              mountPath: /var/lib/mysql-l5/data
+              subPath: mysql-l5
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-l5-db
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 1Gi

@@ -1,0 +1,50 @@
+server:
+  port: ${SERVER_PORT}
+---
+app:
+  fusionauth:
+    host: ${APP_FUSIONAUTH_HOST}
+    authorization-token: ${APP_FUSIONAUTH_AUTHTOKEN}
+    applicationId: ${APP_FUSIONAUTH_APPLICATIONID}
+    jwt-key-secret: ${APP_FUSIONAUTH_JWTSECRET}
+
+
+
+#spring:
+#  cloud:
+#    gateway:
+##      default-filters:
+##        - name: SCGWGlobalFilter
+#      routes:
+#        - id: identity
+#          uri: http://127.0.0.1:9012
+##          uri: http://localhost:9090
+#          predicates:
+#            - Path=/identity/user/**
+#            - Method=GET
+#          filters:
+##            - name: RegistrationPreFilter
+##            - name: RegistrationPostFilter
+#            - RewritePath=/identity/user/(?<userId>.*), /identity/user/${userId}
+##            - name: SCGWPostFilter
+
+#spring:
+#  cloud:
+#    gateway:
+##      default-filters:
+##        - name: SCGWGlobalFilter
+#      routes:
+#        - id: identity
+#          uri: http://127.0.0.1:9012
+#          predicates:
+#            - Path=/identity/registration
+##            - Method=POST
+#          filters:
+#            - name: RegistrationPreFilter
+#            - name: RegistrationPostFilter
+#            - RewritePath=/identity/registration, /api/system-configuration
+##            - name: SCGWPostFilter
+#        - id: nt-ms2
+#          uri: http://localhost:9092
+#          predicates:
+#            - Path=/nt-ms2/**

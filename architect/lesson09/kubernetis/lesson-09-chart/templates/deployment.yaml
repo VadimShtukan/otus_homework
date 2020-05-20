@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "lesson-09-chart.fullname" . }}
+  labels:
+    {{- include "lesson-09-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "lesson-09-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "lesson-09-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "lesson-09-chart.fullname" . }}-config
+                  key: server.port
+            - name: APP_FUSIONAUTH_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "lesson-09-chart.fullname" . }}-config
+                  key: app.fusionauth.host
+            - name: APP_FUSIONAUTH_AUTHTOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "lesson-09-chart.fullname" . }}-config
+                  key: app.fusionauth.authorizationToken
+            - name: APP_FUSIONAUTH_APPLICATIONID
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "lesson-09-chart.fullname" . }}-config
+                  key: app.fusionauth.applicationId
+            - name: APP_FUSIONAUTH_JWTSECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "lesson-09-chart.fullname" . }}-config
+                  key: app.fusionauth.jwtKeySecret
+{{/*            - name: DATABASE_PASSWORD*/}}
+{{/*              valueFrom:*/}}
+{{/*                secretKeyRef:*/}}
+{{/*                  name: {{ include "lesson-09-chart.fullname" . }}-config-secret*/}}
+{{/*                  key: spring.datasource.password*/}}
+{{/*            - name: DATABASE_USER*/}}
+{{/*              valueFrom:*/}}
+{{/*                secretKeyRef:*/}}
+{{/*                  name: {{ include "lesson-09-chart.fullname" . }}-config-secret*/}}
+{{/*                  key: spring.datasource.username*/}}
+{{/*            #                  key: mysql.db.name*/}}
+{{/*            - name: DATABASE_URL*/}}
+{{/*              valueFrom:*/}}
+{{/*                configMapKeyRef:*/}}
+{{/*                  name: {{ include "lesson-09-chart.fullname" . }}-config*/}}
+{{/*                  key: spring.datasource.url*/}}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.service.targetPort }}
+              path: /actuator/health
+            initialDelaySeconds: 30
+            periodSeconds: 50
+            timeoutSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.service.targetPort }}
+              path: /actuator/health
+            initialDelaySeconds: 30
+            periodSeconds: 20

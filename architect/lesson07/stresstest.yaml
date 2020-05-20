@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vadim-shtukan-l7-stresstest
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vadim-shtukan-l7-stresstest
+  template:
+    metadata:
+      labels:
+        app: vadim-shtukan-l7-stresstest
+    spec:
+      containers:
+        - name: vadim-shtukan-l7
+          image: vadimshtukan/otus-sa-l7-stresstest:0.1.2
+          env:
+            - name: URL_FOR_SCAN
+#              value: "http://otus-sa-vadimshtukan-chart:80"
+              value: "http://nginx-nginx-ingress-controller:80/app"
+            - name: RATE_SCAN
+              value: "250"
+            - name: APP_HOST
+              value: "arch.homework"
+---
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  name: vadim-shtukan-l7-stresstes
+#spec:
+#  containers:
+#    - name: vadim-shtukan-l7-stresstes
+#      image: vadimshtukan/otus-sa-l7-stresstest:0.0.4
+#      env:
+#        - name: URL_FOR_SCAN
+#          value: "http://otus-sa-vadimshtukan-chart:80"
+#        - name: RATE_SCAN
+#          value: "1"

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+data:
+  spring.datasource.url: jdbc:mysql://{{ .Release.Name }}-mysql:3306/{{ .Values.mysql.mysqlDatabase }}
+  mysql.darabase: {{ .Values.mysql.mysqlDatabase }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config-secret
+data:
+  spring.datasource.username: {{ .Values.externalMySql.username | b64enc | quote }}
+  spring.datasource.password: {{ .Values.mysql.mysqlRootPassword | b64enc | quote }}
+
