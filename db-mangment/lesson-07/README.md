@@ -7,5 +7,6 @@
 
 ## Screen
 
-`https://www.getpostman.com/collections/148c08e6f4144a214a64`
-`https://www.getpostman.com/collections/148c08e6f4144a214a64`
+![Image description](https://raw.githubusercontent.com/VadimShtukan/otus_homework/master/db-mangment/lesson-07/screen/1.png)  
+---
+![Image description](https://raw.githubusercontent.com/VadimShtukan/otus_homework/master/db-mangment/lesson-07/screen/2.png)  
