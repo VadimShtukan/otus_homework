@@ -1,0 +1,9 @@
+postgresqlUsername: vadim
+postgresqlPassword: p123456
+postgresqlDatabase: lesson07_db
+persistence:
+  size: 0.1Gi
+service:
+  port: "5432"
+networkPolicy:
+  enabled: true
