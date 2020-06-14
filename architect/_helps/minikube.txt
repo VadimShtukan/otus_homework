@@ -1,0 +1,91 @@
+#install
+http://onreader.mdl.ru/KubernetesServerlessApplications/content/Ch03.html
+
+#install watcher-command
+Install-Module Watch -Scope CurrentUser 
+
+#curl wor Windows
+Invoke-WebRequest -uri "http://www.google.nl" -UseBasicParsing
+curl "http://192.168.99.100:30491/process" -UseBasicParsing
+while(1) {curl "http://192.168.99.100:30491/process" -UseBasicParsing; sleep 1}
+curl -H @{"Host"="arch.homework"} "http://192.168.99.100/otusapp/version" -UseBasicParsing
+
+#Curl cycels
+while true ; do curl http://192.168.176.128:30049/health
+
+#start
+minikube start --cpus=6 --memory=6g --vm-driver=virtuebox
+
+#stop
+minikube stop
+
+#create pod
+kubectl apply -f .\pod-l3-1.yml
+
+#Pod logs
+kubectl logs vadim-shtukan-l3-deployment-6c48bcd795-29p94
+
+#delete
+kubectl delete pod <pod-name>
+
+#get pods
+while(1) {cls; kubectl get all -o wide; sleep 10;} #Windows
+kubectl get all -o wide | wc -Cont -second 5 -cls #Install-Module Watch -Scope CurrentUser 
+kubectl get all
+kubectl get pods -o wide
+
+#console
+minikube ssh
+
+#console pod
+kubectl exec -it mysql-l5-statefulset-0 -- /bin/bash
+
+#Delete replicaset
+kubectl delete rs vadim-shtukan-l3-relpica-set
+
+#Update pods to new version by Deployment
+# containers:
+#        - name: vadim-shtukan-l3
+#          image: vadimshtukan/otus-sa-l3:0.0.2
+kubectl set image deployment.apps/vadim-shtukan-l3 vadim-shtukan-l3=vadimshtukan/otus-sa-l3:0.0.3 --record  
+
+#Delete deployment
+kubectl.exe delete deploy vadim-shtukan-l3-deployment
+
+#Rollout Deployment
+kubectl rollout undo deployment vadim-shtukan-l3-deployment
+
+#change replicas number
+kubectl scale deployment vadim-shtukan-l3-deployment --replicas=5
+
+#Run deploymetn + service
+kubectl.exe apply -f .\pod-l3-3-deployment.yml -f .\service-l3-1.yml
+
+#Get list of namespace
+kubectl get namespaces
+
+#Get name service URL
+minikube service vadim-shtukan-l3-service --url -n vadim-shtukan-app-l3 
+
+#Froward service port to localhost
+kubectl port-forward service/vadim-shtukan-l3-service 8090:80 
+curl http://localhost:8090/process
+
+#delete All
+kubectl delete all --all
+
+#Enabe ingress
+minikube addons enable ingress
+
+#Get ingress list
+kubectl get ing
+
+#delete pv and pvc
+kubectl delete pvc mysql-pv-claim
+kubectl delete pv mysql-pv-volume
+
+#Run mysql console
+kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h mysql -pp123456
+
+#temp!!
+docker run -t -i -p 8000:8000 --env DATABASE_PASSWORD=123456 --env DATABASE_USER=root --env DATABASE_URL=jdbc:mysql://172.17.0.2:3306/otus_vadim_shtukan_db vadimshtukan/otus-sa-l5:0.0.1

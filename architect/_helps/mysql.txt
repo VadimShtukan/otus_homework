@@ -1,0 +1,40 @@
+docker pull mysql/mysql-server
+docker run --name=db-otus-vadimshtukan -p 3306:3306 -d mysql/mysql-server:latest 
+
+#change password
+https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/docker-mysql-getting-started.html
+
+
+#console 
+sudo mysql -h 127.0.0.1 -P 3306 -u root -p
+
+#Add grant from localhost (all)
+CREATE USER 'root'@'%' IDENTIFIED BY '123456';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+
+#create database
+create database otus_vadim_shtukan_db;
+create table user
+(
+	id binary(16) null,
+	username varchar(256) null,
+	first_name varchar(50) null,
+	last_name varchar(50) null,
+	email varchar(50) null,
+	phone varchar(50) null
+);
+alter table user
+	add constraint user_pk
+		primary key (id);
+
+
+
+#stop
+docker stop db-otus-vadimshtukan
+
+#start
+docker start db-otus-vadimshtukan
+
+
+
+docker run --name otus-vadim-shtukan-db -e MYSQL_ROOT_PASSWORD=123456 -d mysql

@@ -1,0 +1,7 @@
+kubectl port-forward service/prom-grafana 9000:80
+ 
+kubectl port-forward service/prom-prometheus-operator-prometheus 9090
+
+sum(rate(otus_sa_requests_latency_count{exported_endpoint="/user", method="POST"}[1m]))
+
+histogram_quantile(0.99, sum by (le)(rate(otus_sa_requests_latency_bucket{exported_endpoint="/user", method="POST"}[2m]))) * 1000

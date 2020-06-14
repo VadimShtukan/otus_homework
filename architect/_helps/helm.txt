@@ -1,0 +1,30 @@
+#create templite
+helm create hello-chart
+
+helm install myapp ./hello-chart --dry-run
+
+#If you have dependencis
+ helm dependency update .\lesson7-chart
+ 
+ https://habr.com/ru/company/flant/blog/420437/
+ 
+ $ helm repo add bitnami https://charts.bitnami.com/bitnami
+"bitnami" has been added to your repositories
+
+$ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "bitnami" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete.  Happy Helming!
+
+$ helm repo remove bitnami
+"bitnami" has been removed from your repositories
+
+$ helm search
+
+$ helm list
+
+#Upgrade
+$ helm upgrade habr
+$ helm history habr
+$ helm rollback habr 1

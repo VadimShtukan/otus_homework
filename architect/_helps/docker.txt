@@ -1,0 +1,30 @@
+#buid image from Docker filr(in current directory)
+docker build -t vadimshtukan/otus-sa-l3:0.0.2:0.0.2 .
+
+#login to dockerhub. Docker must have permission sudo (insert to group)
+docker login --username=vadimshtukan
+
+#push to dockerhub
+
+
+#delete image
+docker image rm -f vadimshtukan/otus-sa-l3:0.0.2:0.0.2
+
+#push and run image from dockerhub
+docker run -t -p 8000:8000 vadimshtukan/otus-sa-l3:0.0.2
+
+
+#Ipaddres of container
+docker inspect db-otus-vadimshtukan | grep "IPAddress"
+
+
+docker run -t -i -p 8000:8000 --env DATABASE_PASSWORD=123456 --env DATABASE_USER=root --env DATABASE_URL=jdbc:mysql://172.17.0.2:3306/otus_vadim_shtukan_db vadimshtukan/otus-sa-l5:0.0.1
+
+
+###Push image to dockerhub
+#buid image from Docker filr(in current directory)
+docker login --username=vadimshtukan
+docker build -t vadimshtukan/otus-sa-l3:0.0.2 .
+docker push vadimshtukan/otus-sa-l7:0.0.1
+
+docker run -t --env URL_FOR_SCAN=http://172.17.0.3:80 --env RATE_SCAN=1000 vadimshtukan/otus-sa-l7-stresstest:0.0.2
