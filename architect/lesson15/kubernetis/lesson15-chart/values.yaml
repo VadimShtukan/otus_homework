@@ -5,7 +5,7 @@
 replicaCount: 2
 
 image:
-    repository: vadimshtukan/otus-sa-l7
+    repository: vadimshtukan/otus-sa-l15
 
 service:
   type: NodePort
@@ -26,6 +26,13 @@ ingress:
 metrics:
   serviceMonitor:
     enabled: true
+
+cache:
+  type: redis
+  redis:
+    host: redis
+    port: 6379
+    password: p123456
 
 mysql:
   imageTag: 5.7.9

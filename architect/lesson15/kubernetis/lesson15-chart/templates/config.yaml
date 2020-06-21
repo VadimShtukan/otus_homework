@@ -5,6 +5,9 @@ metadata:
 data:
   spring.datasource.url: jdbc:mysql://{{ .Release.Name }}-mysql:3306/{{ .Values.mysql.mysqlDatabase }}
   mysql.darabase: {{ .Values.mysql.mysqlDatabase }}
+  cache.type: {{ .Values.cache.type }}
+  cache.redis.host: {{ .Values.cache.redis.host }}
+  cache.redis.port: {{ .Values.cache.redis.port }}
 ---
 apiVersion: v1
 kind: Secret
@@ -13,4 +16,5 @@ metadata:
 data:
   spring.datasource.username: {{ .Values.externalMySql.username | b64enc | quote }}
   spring.datasource.password: {{ .Values.mysql.mysqlRootPassword | b64enc | quote }}
+  cache.redis.password: {{ .Values.cache.redis.password | b64enc | quote  }}
 

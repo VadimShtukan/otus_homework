@@ -38,6 +38,27 @@ spec:
                 configMapKeyRef:
                   name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
                   key: spring.datasource.url
+            - name: CACHE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: cache.type
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: cache.redis.host
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: cache.redis.port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: cache.redis.password
+
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
