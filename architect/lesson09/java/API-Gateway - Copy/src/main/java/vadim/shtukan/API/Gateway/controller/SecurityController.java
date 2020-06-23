@@ -51,7 +51,7 @@ public class SecurityController {
 
         //https://github.com/auth0/java-jwt
         try {
-            Algorithm algorithm = Algorithm.HMAC256(this.secret);
+             Algorithm algorithm =Algorithm.HMAC256(this.secret);
             JWTVerifier verifier = JWT.require(algorithm)
 //                    .withIssuer("auth0")
                     .build();

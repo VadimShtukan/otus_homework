@@ -27,10 +27,10 @@ metrics:
   serviceMonitor:
     enabled: true
 
-cache:
+cache_r:
   type: redis
   redis:
-    host: redis
+    host: redis-master
     port: 6379
     password: p123456
 
