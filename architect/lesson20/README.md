@@ -9,4 +9,4 @@
 `$ helm install lesson20 ./kubernetes/lesson20-chart`  
 
 ## Test
-Postman коллекция для тестирования - 
+Postman коллекция для тестирования - https://www.getpostman.com/collections/8374ce6a2a2d91ed8c7b
