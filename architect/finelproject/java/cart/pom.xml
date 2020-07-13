@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>vadim.shtukan.otus.architect.finelproject</groupId>
-	<artifactId>finelproject</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>cart</artifactId>
+	<version>0.0.1</version>
 	<name>Cart</name>
 	<description>Cart project for final Otus project by Architect</description>
 

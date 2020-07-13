@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}
+  labels:
+    {{- include "otus-sa-vadimshtukan-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "otus-sa-vadimshtukan-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "otus-sa-vadimshtukan-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: APP_MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config-secret
+                  key: mongo.password
+            - name: APP_MONGO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: mongo.host
+            - name: APP_MONGO_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: mongo.port
+            - name: APP_MONGO_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: mongo.username
+            - name: APP_MONGO_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+                  key: mongo.database
+
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.service.targetPort }}
+              path: /health
+            initialDelaySeconds: 60
+            periodSeconds: 50
+            timeoutSeconds: 20
+          readinessProbe:
+              httpGet:
+                port: {{ .Values.service.targetPort }}
+                path: /health
+              initialDelaySeconds: 50
+              periodSeconds: 20
+

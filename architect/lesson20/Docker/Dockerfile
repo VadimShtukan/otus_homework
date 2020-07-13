@@ -1,0 +1,6 @@
+#FROM ubuntu:18.04
+FROM openjdk:14
+ADD cart-0.0.1.jar /usr/local/svm/cart-0.0.1.jar
+
+ENTRYPOINT java -XX:+UseContainerSupport -XX:MaxRAMPercentage=50 -jar -DAPP_MONGO_HOST=${APP_MONGO_HOST} -DAPP_MONGO_PORT=${APP_MONGO_PORT} -DAPP_MONGO_PASSWORD=${APP_MONGO_PASSWORD} -DAPP_MONGO_USER=${APP_MONGO_USER} -DAPP_MONGO_DATABASE=${APP_MONGO_DATABASE} /usr/local/svm/cart-0.0.1.jar
+EXPOSE 9090
