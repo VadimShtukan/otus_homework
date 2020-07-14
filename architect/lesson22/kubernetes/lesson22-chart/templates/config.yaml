@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config
+data:
+  mongo.port: "{{ .Values.mongo.port }}"
+  mongo.host: {{ .Values.mongo.host }}
+  mongo.username: {{ .Values.mongo.username }}
+  mongo.database: {{ .Values.mongo.database }}
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "otus-sa-vadimshtukan-chart.fullname" . }}-config-secret
+data:
+  mongo.password: {{ .Values.mongo.password | b64enc | quote  }}
+
