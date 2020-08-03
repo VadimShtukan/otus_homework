@@ -1,0 +1,38 @@
+@startuml
+skinparam sequenceArrowThickness 2
+skinparam maxmessagesize 200
+actor User
+participant "Пользователь" as User
+participant "Web или Delphi Модуль" as FrontEnd
+participant "API Gateway" as Gateway
+participant "Сервис аутентификации пл ЭЦП" as KeyService
+participant "Сервисы" as XService
+autonumber
+== Аутентификация ==
+User -> FrontEnd: Ввод ключа и пароля к нему
+FrontEnd -> Gateway: Отправка подписанного сообщения с ЭЦП
+Gateway -> KeyService: Снять подпись
+KeyService ->KeyService: Получить информацию о пользователе (из ЭЦП)
+KeyService -> KeyService: Сгенерировать JWT
+note right
+в JWT: ФИО, код компании,
+роли пользователя и т.п.
+end note
+KeyService --> Gateway: JWT
+Gateway --> FrontEnd: JWT на хранение для следующих запросов
+... ...
+== Авторизация ==
+autonumber 1
+User -> FrontEnd: Любой запрос пользователя (н.п. создание eTTN)
+FrontEnd -> Gateway: Генерация JSON и отправка сообщения (с JWT в заголовке запроса)
+Gateway-> Gateway: Валидация JWT
+Gateway -> XService: Отправить запрос пользователя
+note left
+В заголовке указываем данные пользователя
+X-Auth-Request-UserId, X-Auth-Request-Group и т.п.
+end note
+XService -> XService: Авторизация (имеет ли право пользователь выполнить данный запрос
+XService -> XService: Выполнение запроса
+XService --> Gateway: Ответ пользователю
+Gateway --> FrontEnd: Ответ пользователю
+@enduml

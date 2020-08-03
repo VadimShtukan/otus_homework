@@ -1,0 +1,144 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Simple Inventory API
+  # put the contact info for your development or API team
+  contact:
+    email: vadim.shtukan@gmail.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+# tags are used for organizing operations
+tags:
+  - name: OpenAPI
+    description: API которые открыты через API Gateway
+  - name: CloseAPI
+    description: API которые которые доступны между сервисами и недоступны для пользователей
+
+
+paths:
+  /cart:
+    post:
+      tags:
+        - OpenAPI
+      summary: Add product to cart
+      description: Добавить продукт в корзину. Если ID корзины не указан, то создается новая корзина.
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: cartId
+          description: ID карзины, в которую будет добавлен продукт. Если не указано, то создается новая корзина.
+          required: false
+          type: string
+          format: uuid
+        - in: body
+          name: ProductCart
+          description: Продукт для добавления в корзину
+          schema:
+            $ref: '#/definitions/ProductCart'
+          required: true
+        - in: header
+          name: X-RequestId
+          type: string
+          format: uuid
+          required: true
+          description: Уникальный ID, для идемпотентности
+        - in: header
+          name: X-UserId
+          type: string
+          format: uuid
+          required: false
+          description: Заполняется API Gateway
+        - in: header
+          name: X-CountryId
+          type: string
+          format: uuid
+          required: true
+          description: Заполняется API Gateway
+        - in: header
+          name: X-ShopId
+          type: string
+          format: uuid
+          required: true
+          description: Заполняется API Gateway
+
+      responses:
+        200:
+          description: Товар добавлен в корзину
+          schema:
+            $ref: '#/definitions/Cart'
+        404:
+          description: Корзина не найдена.
+
+
+definitions:
+  ProductCart:
+    type: object
+    properties:
+      productId:
+        type: string
+        format: uuid
+      size:
+        type: string
+        format: int64
+      quantity:
+        type: integer
+        format: int64
+      price:
+        type: number
+        format: double
+      discount:
+        type: number
+        format: double
+      personalDiscount:
+        type: number
+        format: double
+      total:
+        type: number
+        format: double
+    required:
+      - productId
+
+  Cart:
+    type: object
+    properties:
+      cartId:
+        type: string
+        format: uuid
+      productList:
+        type: array
+        items:
+          $ref: '#/definitions/ProductCart'
+      subtotal:
+        type: number
+        format: double
+      discount:
+        type: number
+        format: double
+      total:
+        type: number
+        format: double
+      cartCurrency:
+        $ref: '#/definitions/Currency'
+
+  Currency:
+    type: object
+    properties:
+      currencyId:
+        type: string
+        format: uuid
+      code:
+        type: string
+      name:
+        type: string
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /VadimShtukan/per.ua.ms/1.0.0
+schemes:
+  - https
