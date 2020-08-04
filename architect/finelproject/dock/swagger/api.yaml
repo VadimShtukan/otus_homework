@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   description: eTTN API
   version: 1.0.0
-  title: eTTN API ref
+  title: eTTN API ref (for Web)
 
   contact:
     email: vadim.shtukan@gmail.com
@@ -19,30 +19,58 @@ tags:
 
 
 paths:
+  /identity/user/login:
+    post:
+      tags:
+        - Identity
+      summary: User login
+      description: Аутентификация пользователя(получения токена)
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: UserRegistration
+          description: Данные для входа. Необходимо заполнить  UserRegistration.signature
+          schema:
+            $ref: '#/definitions/UserRegistration'
+          required: true
+      responses:
+        200:
+          description: Аутентификация прошла успешно
+          schema:
+            $ref:  '#/definitions/UserLogin'
+        403:
+          description: Не удалось авторизоваться
   /identity/user:
     post:
       tags:
         - Identity
       summary: Create new user
       description: Зарегистрировать нового пользователя. Зарегистрироваться может любой пользователь, при этом у него не будет ни каких прав. |
-              Права может выдать ответсвенное лицо в организации, у которого есть договор с нами. |
-              Подробнее - https://fusionauth.io/docs/v1/tech/apis/users#create-a-user
+              Права может выдать ответсвенное лицо в организации, у которого есть договор с нами.
       produces:
         - application/json
       parameters:
         - in: body
-          name: EttnUser
+          name: UserRegistration
           description: Информация о пользователе
           schema:
             $ref: '#/definitions/UserRegistration'
           required: true
-
-
       responses:
         201:
           description: Пользователь создан
+          schema:
+            $ref:  '#/definitions/UserLogin'
 
 definitions:
+  UserLogin:
+    type: object
+    properties:
+      userId:
+        type: string
+      jwt:
+        type: string
   Company:
     type: object
     properties:
@@ -64,7 +92,7 @@ definitions:
         $ref: '#/definitions/Company'
       signature:
         type: string
-        description: Регистрационный ключ, подписанная ЭЦП
+        description: Серийный номер ЭЦП, подписанная ЭЦП. Должен быть подписан не позже 1 минуты до выполнения запроса.
       email:
         type: string
         format: email

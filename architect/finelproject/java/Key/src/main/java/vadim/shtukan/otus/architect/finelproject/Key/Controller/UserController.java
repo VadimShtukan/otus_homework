@@ -1,7 +1,6 @@
 package vadim.shtukan.otus.architect.finelproject.Key.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Controller;
 import vadim.shtukan.otus.architect.finelproject.Key.Model.PayloadJwt;
 import vadim.shtukan.otus.architect.finelproject.Key.Model.User;
@@ -11,7 +10,7 @@ import vadim.shtukan.otus.architect.finelproject.Key.Repository.UserRepository;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -21,6 +20,9 @@ public class UserController {
 
     @Autowired
     private JwtController jwtController;
+    
+    @Autowired
+    private EuSignature euSignature;
 
     public UserController() {
     }
@@ -28,23 +30,22 @@ public class UserController {
     public UserLogin registration(UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
         //todo validate userRegistration
         //todo check if user has been registrated
-        //todo check signature by EUSIGN
         //todo add clear group
 
-        byte[] signatureByte = Base64.getUrlDecoder().decode(userRegistration.getSignature());
-
-        userRegistration.setRegKeyId(new String(signatureByte));
+        userRegistration.setSerialNumber(euSignature.verifySignature(userRegistration.getSignature()));
 
         User user = userRepository.save((User)userRegistration);
 
-        UserLogin userLogin = this.getNewJwtForUser(user.getId());
-
-        return this.getNewJwtForUser(user.getId());
+        return this.getNewJwtForUserByUserId(user.getId());
     }
 
-    private UserLogin getNewJwtForUser(String id) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    private UserLogin getNewJwtForUserByUserId(String id) throws InvalidKeySpecException, NoSuchAlgorithmException {
         User user = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not founded. Id: " + id));
 
+        return this.getNewJwtForUser(user);
+    }
+
+    private UserLogin getNewJwtForUser(User user) throws InvalidKeySpecException, NoSuchAlgorithmException {
         PayloadJwt payloadJwt = user.toPayloadJwt();
 
         String jwt = jwtController.generateJwt(payloadJwt);
@@ -53,4 +54,11 @@ public class UserController {
     }
 
 
+    public UserLogin login(UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        String serialNumber = euSignature.verifySignature(userRegistration.getSignature());
+
+        List<User> userLoginningList = userRepository.findBySerialNumber(serialNumber);
+
+        return this.getNewJwtForUser(userLoginningList.get(userLoginningList.size() - 1));
+    }
 }

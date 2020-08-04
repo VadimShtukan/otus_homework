@@ -1,8 +1,8 @@
 # Installation
 
 #### Init
-`$ minikube addons enable ingress`  
-`$ helm dependency update .\lesson-09-chart`  
+----`$ minikube addons enable ingress`  
+----`$ helm dependency update .\lesson-09-chart`  
 `$ helm repo add bitnami https://charts.bitnami.com/bitnami`
 ----`$ helm repo add fusionauth https://fusionauth.github.io/charts`
 

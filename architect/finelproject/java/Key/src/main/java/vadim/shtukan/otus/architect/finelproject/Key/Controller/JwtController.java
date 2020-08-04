@@ -7,10 +7,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.PayloadJwt;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.*;
 import org.springframework.stereotype.Controller;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
 
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;

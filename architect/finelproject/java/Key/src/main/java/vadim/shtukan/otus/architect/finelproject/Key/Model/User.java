@@ -12,15 +12,15 @@ public class User {
     private String firstName;
     private String lastName;
     private String mobilePhone;
-    private String regKeyId;
+    private String serialNumber;
     private List<UserGroup> UserGroupList;
 
-    public String getRegKeyId() {
-        return regKeyId;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    public void setRegKeyId(String regKeyId) {
-        this.regKeyId = regKeyId;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String[] getUserGroupIdList(){

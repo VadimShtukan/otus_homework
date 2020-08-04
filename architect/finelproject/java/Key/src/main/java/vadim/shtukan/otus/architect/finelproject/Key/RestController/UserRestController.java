@@ -25,4 +25,12 @@ public class UserRestController {
         //TODO catch exceptions
         return userController.registration(userRegistration);
     }
+
+    @PostMapping
+    @RequestMapping("login")
+    public UserLogin login(@RequestBody UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        //TODO catch exceptions
+
+        return userController.login(userRegistration);
+    }
 }

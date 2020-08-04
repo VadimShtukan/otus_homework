@@ -11,7 +11,7 @@ autonumber
 == Аутентификация ==
 User -> FrontEnd: Ввод ключа и пароля к нему
 FrontEnd -> Gateway: Отправка подписанного сообщения с ЭЦП
-Gateway -> KeyService: Снять подпись
+Gateway -> KeyService: Снять подпись(проверить по отметки времени дату наложения подписи)
 KeyService ->KeyService: Получить информацию о пользователе (из ЭЦП)
 KeyService -> KeyService: Сгенерировать JWT
 note right

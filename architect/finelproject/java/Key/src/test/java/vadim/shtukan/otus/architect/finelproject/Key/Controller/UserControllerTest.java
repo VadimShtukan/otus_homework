@@ -20,10 +20,12 @@ class UserControllerTest {
     @Autowired
     UserController userController;
 
+    private final String signature = "NmFlNzU0ZDgtZDU3My0xMWVhLTg3ZDAtMDI0MmFjMTMwMDAz";
+
     @Test
     void registration() throws InvalidKeySpecException, NoSuchAlgorithmException {
         UserRegistration userRegistration = new UserRegistration();
-        userRegistration.setSignature("NmFlNzU0ZDgtZDU3My0xMWVhLTg3ZDAtMDI0MmFjMTMwMDAz");
+        userRegistration.setSignature(signature);
         userRegistration.setCompany(new Company("1234", "655474789", "Company Name"));
         userRegistration.setEmail("test@test.com");
         userRegistration.setFirstName("Name");
@@ -33,6 +35,16 @@ class UserControllerTest {
         UserLogin userLogin = userController.registration(userRegistration);
 
         assertNotNull(userLogin.getUserId());
+        assertNotNull(userLogin.getJwt());
+    }
+
+    @Test
+    void login() throws Exception{
+        UserRegistration userRegistration = new UserRegistration();
+        userRegistration.setSignature(signature);
+
+        UserLogin userLogin = userController.login(userRegistration);
+
         assertNotNull(userLogin.getJwt());
     }
 }
