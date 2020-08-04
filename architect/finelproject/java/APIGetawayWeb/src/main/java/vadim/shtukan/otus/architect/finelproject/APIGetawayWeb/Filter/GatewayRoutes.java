@@ -14,17 +14,8 @@ import vadim.shtukan.otus.architect.finelproject.APIGetawayWeb.Model.UserRegistr
 
 @Configuration
 public class GatewayRoutes {
-//    @Value("${app.fusionauth.host}")
-//    String fusionauthHost;
-
     @Value("${app.services.key}")
     String keyHost;
-
-//    @Value("${app.fusionauth.authorization-token}")
-//    String fusionauthAuthorizationToken;
-//
-//    @Value("${app.fusionauth.applicationId}")
-//    String applicationId;
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
@@ -40,12 +31,20 @@ public class GatewayRoutes {
 //                                            return Mono.just(FusionAuthSerialisation.serialise(s, applicationId));
 //                                        })
                                         .modifyResponseBody(String.class, String.class,(exchange, s) -> {
-                                            //TODO send to Kafka event
+                                            //TODO send to Kafka event - add user -???
                                             return Mono.just(s);
                                         })
                         )
                         .uri(this.keyHost))
-                .build();
 
+                .route("identity_login_user", r -> r
+                        .path("/identity/user/login")
+                        .and().method(HttpMethod.POST)
+                        .filters(f->f
+                                        .rewritePath("/identity/user/login", "/user/login")
+                        )
+                        .uri(this.keyHost))
+
+                .build();
     }
 }
