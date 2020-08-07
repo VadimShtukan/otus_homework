@@ -6,19 +6,21 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import reactor.core.publisher.Mono;
-import vadim.shtukan.otus.architect.finelproject.APIGetawayWeb.Model.Fusion.FusionAuthSerialisation;
-import vadim.shtukan.otus.architect.finelproject.APIGetawayWeb.Model.Fusion.FusionAuth_UserRegistration;
-import vadim.shtukan.otus.architect.finelproject.APIGetawayWeb.Model.UserRegistration;
+
+import static org.springframework.cloud.gateway.filter.RouteToRequestUrlFilter.ROUTE_TO_URL_FILTER_ORDER;
+
 
 @Configuration
 public class GatewayRoutes {
     @Value("${app.services.key}")
     String keyHost;
 
+    @Value("${app.services.ettn}")
+    private String ettnHost;
+
     @Bean
-    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
+    public RouteLocator routeLocator(RouteLocatorBuilder builder, CheckJwtGatewayFilter checkJwtGatewayFilter) {
         return builder.routes()
                 .route("identity_registration_user", r -> r
                         .path("/identity/user")
@@ -45,6 +47,14 @@ public class GatewayRoutes {
                         )
                         .uri(this.keyHost))
 
+                .route("ettn", r -> r
+                        .path("/ettn/**")
+                        .filters(f->f
+                                .filter(checkJwtGatewayFilter, ROUTE_TO_URL_FILTER_ORDER + 1)
+                                //.addRequestHeader()
+                                //.removeRequestHeader()
+                        )
+                        .uri(this.ettnHost))
                 .build();
     }
 }

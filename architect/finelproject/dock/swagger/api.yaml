@@ -11,19 +11,116 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
-
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 # tags are used for organizing operations
 tags:
+  - name: Ettn
+    description: Работа с ЕТТН
   - name: Identity
     description: Регистрация, аутентификация и авторизация пользователей
 
-
 paths:
+  /ettn/transporter:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Ettn
+      summary: Добавить данные перевозчика в XML
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: ettnId
+          required: true
+        - in: body
+          name: EttnTransporterJson
+          description: Данные XML перевозчика (EttnXml.xml - обязательное поле)
+          schema:
+            $ref: '#/definitions/EttnXml'
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/EttnXml'
+  /ettn/recipient:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Ettn
+      summary: Добавить данные получателя в XML
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: ettnId
+          required: true
+        - in: body
+          name: EttnTransporterJson
+          description: Данные XML получателя (EttnXml.xml - обязательное поле)
+          schema:
+            $ref: '#/definitions/EttnXml'
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/EttnXml'
+  /ettn:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Ettn
+      summary: Получить ETTN по ID
+      description: Получить ETTN по номеру
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: ettnId
+          required: true
+      responses:
+        200:
+          description: Ok
+          schema:
+            $ref: '#/definitions/EttnXml'
+  /ettn/originator:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Ettn
+      summary: Создать новый еттн
+      description: Создать новый еттн
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: EttnOriginatorJson
+          description: Ettn завернутый в xml (EttnXml.xml - обязательное поле)
+          schema:
+            $ref: '#/definitions/EttnXml'
+          required: true
+      responses:
+        201:
+          description: Ettn создан
+          schema:
+            $ref: '#/definitions/EttnXml'
   /identity/user/login:
     post:
       tags:
         - Identity
-      summary: User login
+      summary: Аутентификация пользователя(получения токена)
       description: Аутентификация пользователя(получения токена)
       produces:
         - application/json
@@ -33,6 +130,8 @@ paths:
           description: Данные для входа. Необходимо заполнить  UserRegistration.signature
           schema:
             $ref: '#/definitions/UserRegistration'
+#            required:
+#              - UserRegistration.signature
           required: true
       responses:
         200:
@@ -45,7 +144,7 @@ paths:
     post:
       tags:
         - Identity
-      summary: Create new user
+      summary: Создать нового пользователя
       description: Зарегистрировать нового пользователя. Зарегистрироваться может любой пользователь, при этом у него не будет ни каких прав. |
               Права может выдать ответсвенное лицо в организации, у которого есть договор с нами.
       produces:
@@ -64,6 +163,29 @@ paths:
             $ref:  '#/definitions/UserLogin'
 
 definitions:
+  EttnXml:
+    type: object
+    properties:
+      id:
+        type: string
+      cbdId:
+        type: string
+      stage:
+        type: string
+        description: Этап прохождения XML (создан оператором, подписан перевозчиком и т.п.)
+      ownerUserId:
+        type: string
+      ownerCompanyId:
+        type: string
+      status:
+        type: string
+        description: Статус документа (в процессе обработки провайдером, принят провайдером, принят ЦБД и т.д.)
+      statusDescription:
+        type: string
+        description: Причина оказа.
+      xml:
+        type: string
+        description: В base64
   UserLogin:
     type: object
     properties:
@@ -71,6 +193,7 @@ definitions:
         type: string
       jwt:
         type: string
+
   Company:
     type: object
     properties:

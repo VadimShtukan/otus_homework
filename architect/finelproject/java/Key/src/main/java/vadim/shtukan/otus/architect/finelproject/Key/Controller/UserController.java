@@ -2,10 +2,10 @@ package vadim.shtukan.otus.architect.finelproject.Key.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.PayloadJwt;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.User;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.PayloadJwt;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.User;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.UserLogin;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.UserRegistration;
 import vadim.shtukan.otus.architect.finelproject.Key.Repository.UserRepository;
 
 import java.security.NoSuchAlgorithmException;
@@ -31,6 +31,9 @@ public class UserController {
         //todo validate userRegistration
         //todo check if user has been registrated
         //todo add clear group
+        //todo add user created date
+        //todo Компанию в отдельный объект
+        //todo добавить ID компании в jwt
 
         userRegistration.setSerialNumber(euSignature.verifySignature(userRegistration.getSignature()));
 

@@ -11,9 +11,18 @@
 ----`$ helm install fusionauth-helm -f .\fusionauth.yml fusionauth/fusionauth`  
 
 #### MongoDb
-`$ helm install mongo -f ./kubernetes/mongodb.yml bitnami/mongodb`  
+`$ helm install mongo-kye -f ./kubernetes/mongodb-key.yml bitnami/mongodb`  
+`$ helm install mongo-document -f ./kubernetes/mongodb-document.yml bitnami/mongodb`  
+
+#### Redis
+`$ helm install redis -f ./kubernetes/redis.yml bitnami/redis` 
+
+#### Kafka
+`$ helm install -f ./kubernetes/kafka.yml kafka bitnami/kafka`
 
 
-
-`$ kubectl port-forward service/fusionauth-helm 9012:9012`
-`$ kubectl port-forward service/mongo-mongodb 27017:27017`
+---`$ kubectl port-forward service/fusionauth-helm 9012:9012`
+`$ kubectl port-forward service/mongo-key-mongodb 27017:27017`
+`$ kubectl port-forward service/mongo-document-mongodb 27018:27017`
+`$ kubectl port-forward service/redis-master 6379:6379`
+`$ kubectl port-forward service/kafka 9092:9092`

@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.Company;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.Company;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.UserLogin;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.UserRegistration;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -21,6 +21,7 @@ class UserControllerTest {
     UserController userController;
 
     private final String signature = "NmFlNzU0ZDgtZDU3My0xMWVhLTg3ZDAtMDI0MmFjMTMwMDAz";
+    private final String serialNumber = "6ae754d8-d573-11ea-87d0-0242ac130003";
 
     @Test
     void registration() throws InvalidKeySpecException, NoSuchAlgorithmException {
@@ -35,6 +36,7 @@ class UserControllerTest {
         UserLogin userLogin = userController.registration(userRegistration);
 
         assertNotNull(userLogin.getUserId());
+        assertEquals(userRegistration.getSerialNumber(), serialNumber);
         assertNotNull(userLogin.getJwt());
     }
 

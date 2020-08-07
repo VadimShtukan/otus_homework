@@ -7,7 +7,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.*;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.*;
 import org.springframework.stereotype.Controller;
 
 import java.security.*;
@@ -63,8 +63,8 @@ public class JwtController {
 
         KeyFactory keyFactory;
         keyFactory = KeyFactory.getInstance("RSA");
+        
         byte[] encodedPv = Base64.decodeBase64(privateKeyString);
-
         PKCS8EncodedKeySpec keySpecPv = new PKCS8EncodedKeySpec(encodedPv);
         privateKey = keyFactory.generatePrivate(keySpecPv);
 

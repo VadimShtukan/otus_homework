@@ -1,0 +1,5 @@
+password: "p123456"
+persistence:
+  size: 500Mi
+cluster:
+  enabled: false

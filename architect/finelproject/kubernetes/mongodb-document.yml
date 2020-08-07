@@ -1,0 +1,7 @@
+auth:
+  rootPassword: p123456
+  username: user
+  password: p123456
+  database: document
+persistence:
+  size: 1Gi
