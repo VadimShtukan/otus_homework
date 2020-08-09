@@ -1,4 +1,4 @@
-package vadim.shtukan.otus.architect.finelproject.Key.Models;
+package vadim.shtukan.otus.architect.finelproject.Key.Model;
 
 public class UserRegistration extends User{
     private String signature;

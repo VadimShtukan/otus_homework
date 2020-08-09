@@ -14,9 +14,9 @@ import static org.springframework.cloud.gateway.filter.RouteToRequestUrlFilter.R
 @Configuration
 public class GatewayRoutes {
     @Value("${app.services.key}")
-    String keyHost;
+    private String keyHost;
 
-    @Value("${app.services.ettn}")
+    @Value("${app.services.document}")
     private String ettnHost;
 
     @Bean

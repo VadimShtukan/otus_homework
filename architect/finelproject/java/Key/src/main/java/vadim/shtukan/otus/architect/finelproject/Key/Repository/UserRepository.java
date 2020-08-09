@@ -2,7 +2,7 @@ package vadim.shtukan.otus.architect.finelproject.Key.Repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.User;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.User;
 
 import java.util.List;
 

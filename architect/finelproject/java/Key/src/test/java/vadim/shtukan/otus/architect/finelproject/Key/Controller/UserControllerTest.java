@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.Company;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.UserLogin;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.UserRegistration;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.Company;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

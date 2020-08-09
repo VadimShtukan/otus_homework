@@ -1,7 +1,6 @@
 package vadim.shtukan.otus.architect.finelproject.Document;
 
 import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -10,6 +9,8 @@ import org.springframework.kafka.support.converter.DefaultJackson2JavaTypeMapper
 import org.springframework.kafka.support.converter.Jackson2JavaTypeMapper;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
+import vadim.shtukan.otus.architect.finelproject.KafkaModel.DocumentKafka;
+import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
 import vadim.shtukan.otus.architect.finelproject.Document.Models.UserGroup;
 
 import java.util.HashMap;
@@ -33,21 +34,14 @@ public class DocumentApplication {
 		StringJsonMessageConverter converter = new StringJsonMessageConverter();
 		DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();
 		typeMapper.setTypePrecedence(Jackson2JavaTypeMapper.TypePrecedence.TYPE_ID);
-		typeMapper.addTrustedPackages("vadim.shtukan.otus.architect.finelproject.Document.Models");
+		typeMapper.addTrustedPackages("vadim.shtukan.otus.architect.finelproject.KafkaModel");
 		Map<String, Class<?>> mappings = new HashMap<>();
 		mappings.put("userGroup", UserGroup.class);
+		mappings.put("DocumentKafka", DocumentKafka.class);
+		mappings.put("UserKafka", UserKafka.class);
 		//mappings.put("bar", Bar2.class);
 		typeMapper.setIdClassMapping(mappings);
 		converter.setTypeMapper(typeMapper);
 		return converter;
 	}
-
-//	@Bean
-//	public ApplicationRunner runner() {
-//		return args -> {
-//			System.out.println("Hit Enter to terminate...");
-//			System.in.read();
-//		};
-//	}
-
 }

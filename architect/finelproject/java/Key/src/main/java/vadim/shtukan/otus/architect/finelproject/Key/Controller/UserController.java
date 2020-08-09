@@ -1,11 +1,13 @@
 package vadim.shtukan.otus.architect.finelproject.Key.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.PayloadJwt;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.User;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.UserLogin;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.UserRegistration;
+import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.PayloadJwt;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.User;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
 import vadim.shtukan.otus.architect.finelproject.Key.Repository.UserRepository;
 
 import java.security.NoSuchAlgorithmException;
@@ -24,6 +26,9 @@ public class UserController {
     @Autowired
     private EuSignature euSignature;
 
+    @Autowired
+    private KafkaTemplate<Object, Object> kafkaTemplate;
+
     public UserController() {
     }
 
@@ -38,6 +43,8 @@ public class UserController {
         userRegistration.setSerialNumber(euSignature.verifySignature(userRegistration.getSignature()));
 
         User user = userRepository.save((User)userRegistration);
+
+        kafkaTemplate.send("user.new", new UserKafka(user.getId()));
 
         return this.getNewJwtForUserByUserId(user.getId());
     }

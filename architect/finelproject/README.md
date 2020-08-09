@@ -21,8 +21,8 @@
 `$ helm install -f ./kubernetes/kafka.yml kafka bitnami/kafka`
 
 
----`$ kubectl port-forward service/fusionauth-helm 9012:9012`
-`$ kubectl port-forward service/mongo-key-mongodb 27017:27017`
-`$ kubectl port-forward service/mongo-document-mongodb 27018:27017`
-`$ kubectl port-forward service/redis-master 6379:6379`
-`$ kubectl port-forward service/kafka 9092:9092`
+---`$ kubectl port-forward service/fusionauth-helm 9012:9012 --address 0.0.0.0`
+`$ kubectl port-forward service/mongo-kye-mongodb 27017:27017 --address 0.0.0.0`
+`$ kubectl port-forward service/mongo-document-mongodb 27018:27017 --address 0.0.0.0`
+`$ kubectl port-forward service/redis-master 6379:6379 --address 0.0.0.0`
+`$ kubectl port-forward service/kafka 9092:9092 --address 0.0.0.0`

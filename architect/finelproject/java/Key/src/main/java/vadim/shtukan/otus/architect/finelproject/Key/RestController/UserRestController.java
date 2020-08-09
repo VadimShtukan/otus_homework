@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vadim.shtukan.otus.architect.finelproject.Key.Controller.UserController;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.UserLogin;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.UserRegistration;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

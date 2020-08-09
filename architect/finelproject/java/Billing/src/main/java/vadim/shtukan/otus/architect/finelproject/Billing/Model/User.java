@@ -1,11 +1,10 @@
-package vadim.shtukan.otus.architect.finelproject.Key.Models;
-
-import org.springframework.data.annotation.Id;
+package vadim.shtukan.otus.architect.finelproject.Billing.Model;
 
 import java.util.List;
 
 public class User {
-    @Id
+
+
     private String id;
     private Company company;
     private String email;
@@ -13,7 +12,20 @@ public class User {
     private String lastName;
     private String mobilePhone;
     private String serialNumber;
-    private List<UserGroup> UserGroupList;
+    private List<UserGroup> userGroupList;
+    private String [] userGroupIdList;
+
+    public String[] getUserGroupIdList() {
+        return userGroupIdList;
+    }
+
+    public void setUserGroupIdList(String[] userGroupIdList) {
+        this.userGroupIdList = userGroupIdList;
+    }
+
+    public User() {
+    }
+
 
     public String getSerialNumber() {
         return serialNumber;
@@ -23,23 +35,13 @@ public class User {
         this.serialNumber = serialNumber;
     }
 
-    public String[] getUserGroupIdList(){
-        String[] userGroupIdArray = new String[this.getUserGroupList().size()];
-
-        int i =0;
-        for(UserGroup item: this.getUserGroupList()){
-            userGroupIdArray[i] = item.getId();
-            i++;
-        }
-        return userGroupIdArray;
-    }
 
     public List<UserGroup> getUserGroupList() {
-        return UserGroupList;
+        return userGroupList;
     }
 
     public void setUserGroupList(List<UserGroup> userGroupList) {
-        UserGroupList = userGroupList;
+        this.userGroupList = userGroupList;
     }
 
     public String getId() {
@@ -90,13 +92,4 @@ public class User {
         this.mobilePhone = mobilePhone;
     }
 
-    public PayloadJwt toPayloadJwt() {
-        PayloadJwt payloadJwt = new PayloadJwt();
-        payloadJwt.setUserGroupList(this.getUserGroupList());
-        payloadJwt.setUserId(this.getId());
-        payloadJwt.setCompany(this.getCompany());
-        payloadJwt.setUserName(this.getLastName() + " " + this.getFirstName());
-
-        return payloadJwt;
-    }
 }

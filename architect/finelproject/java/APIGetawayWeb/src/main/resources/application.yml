@@ -4,7 +4,7 @@ server:
 app:
   services:
     key: http://127.0.0.1:8001
-    ettn: http://127.0.0.1:8002
+    document: http://127.0.0.1:8002
 
 ---
 #spring:

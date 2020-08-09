@@ -1,15 +1,9 @@
-package vadim.shtukan.otus.architect.finelproject.Key.Models;
+package vadim.shtukan.otus.architect.finelproject.Billing.Model;
 
 public class Company {
     private String id;
     private String egrpo;
     private String name;
-
-    public Company(String id, String egrpo, String name) {
-        this.id = id;
-        this.egrpo = egrpo;
-        this.name = name;
-    }
 
     public String getId() {
         return id;
@@ -35,3 +29,4 @@ public class Company {
         this.name = name;
     }
 }
+
