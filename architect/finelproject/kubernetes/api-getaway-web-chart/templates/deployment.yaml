@@ -19,7 +19,8 @@ spec:
         {{- include "api-getaway-web-chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+{{/*        - name: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"*/}}
+        - name: vadimshtukan/otus-sa-l20:0.0.1
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
