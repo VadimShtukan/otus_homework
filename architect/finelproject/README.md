@@ -20,6 +20,8 @@
 #### Kafka
 `$ helm install -f ./kubernetes/kafka.yml kafka bitnami/kafka`
 
+#### APPs Install
+`$ helm install api-getaway-web ./kubernetes/api-getaway-web-chart`  
 
 ---`$ kubectl port-forward service/fusionauth-helm 9012:9012 --address 0.0.0.0`
 `$ kubectl port-forward service/mongo-kye-mongodb 27017:27017 --address 0.0.0.0`

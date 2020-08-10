@@ -6,14 +6,10 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}($|/)(.*)
-        {{- end }}
-  {{- end }}
+          - path: /aaa($|/)(.*)
             backend:
               serviceName: {{ include "otus-sa-vadimshtukan-chart.name" . }}
               servicePort: {{ .Values.service.port }}

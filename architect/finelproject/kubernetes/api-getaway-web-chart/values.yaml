@@ -13,6 +13,4 @@ service:
 
 ingress:
   enabled: true
-  hosts:
-    - host: arch.homework
-#      paths: ["/app"]
+  host: arch.homework
