@@ -2,7 +2,6 @@
 replicaCount: 1
 
 image:
-  #TODO
   repository: vadimshtukan/api-getaway-web-chart
 
 
