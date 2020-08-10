@@ -19,8 +19,7 @@ spec:
         {{- include "api-getaway-web-chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           ports:
             - name: http
               containerPort: {{ .Values.service.targetPort }}
