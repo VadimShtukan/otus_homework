@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.PayloadJwt;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.User;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.*;
 import vadim.shtukan.otus.architect.finelproject.Key.Repository.UserRepository;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -32,7 +30,7 @@ public class UserController {
     public UserController() {
     }
 
-    public UserLogin registration(UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public UserRegistration registration(UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
         //todo validate userRegistration
         //todo check if user has been registrated
         //todo add clear group
@@ -40,13 +38,19 @@ public class UserController {
         //todo Компанию в отдельный объект
         //todo добавить ID компании в jwt
 
+        UserGroup userGroup = new UserGroup("1");
+        ArrayList<UserGroup> userGroupList = new ArrayList<>();
+        userGroupList.add(userGroup);
+        userRegistration.setUserGroupList(userGroupList);
+
+
         userRegistration.setSerialNumber(euSignature.verifySignature(userRegistration.getSignature()));
 
-        User user = userRepository.save((User)userRegistration);
+        UserRegistration user = userRepository.save(userRegistration);
 
         kafkaTemplate.send("user.new", new UserKafka(user.getId()));
 
-        return this.getNewJwtForUserByUserId(user.getId());
+        return user;
     }
 
     private UserLogin getNewJwtForUserByUserId(String id) throws InvalidKeySpecException, NoSuchAlgorithmException {

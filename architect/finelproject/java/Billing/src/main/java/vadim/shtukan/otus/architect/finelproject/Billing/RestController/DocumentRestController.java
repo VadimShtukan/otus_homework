@@ -1,20 +1,49 @@
 package vadim.shtukan.otus.architect.finelproject.Billing.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import vadim.shtukan.otus.architect.finelproject.Billing.Controller.BillingController;
+import vadim.shtukan.otus.architect.finelproject.Billing.Controller.SecurityController;
+import vadim.shtukan.otus.architect.finelproject.Billing.Model.Debit;
 import vadim.shtukan.otus.architect.finelproject.Billing.Model.EttnXml;
+import vadim.shtukan.otus.architect.finelproject.Billing.Model.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-@Controller
+@RestController
+@RequestMapping("billing")
 public class DocumentRestController {
     @Value("${app.services.document}")
     private String documentHost;
 
+    @Autowired
+    private SecurityController securityController;
+
+    @Autowired
+    private BillingController billingController;
+
     private RestTemplate restTemplate = new RestTemplate();
+
+    @GetMapping("/debit/{companyId}")
+    public Debit getDebitByCompanyId(@PathVariable String companyId, HttpServletRequest httpRequest) throws JsonProcessingException {
+        //todo move securityController.getUser to filter
+        User user = securityController.getUser(httpRequest);
+        //todo check user right in object user
+
+        //todo check - имеет ли право этот пользователь запрашивать этот документ?
+
+        return billingController.getDebitByCompany(companyId);
+    }
+
 
     public EttnXml getEttnById(String ettnId){
 

@@ -3,6 +3,7 @@ package vadim.shtukan.otus.architect.finelproject.Document.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import vadim.shtukan.otus.architect.finelproject.Document.Controller.EttnController;
 import vadim.shtukan.otus.architect.finelproject.KafkaModel.DocumentKafka;
@@ -16,6 +17,10 @@ import static vadim.shtukan.otus.architect.finelproject.Document.Models.Document
 public class KafkaListenerComponent {
     @Autowired
     private EttnController ettnController;
+
+    @Autowired
+    private KafkaTemplate<Object, Object> kafkaTemplate;
+
 
     @KafkaHandler
     @KafkaListener(id = "Document", topics = { "userGroup" })
@@ -56,7 +61,9 @@ public class KafkaListenerComponent {
     @KafkaListener(id = "Document5", topics = { "document.ettn.addBillingOk" })
     public void addBillingOk(DocumentKafka documentKafka) {
         ettnController.changeStatusEttn(documentKafka.getId(), WAIT_FOR_CBD_REGISTRATION, documentKafka.getDescription());
-        //TODO send KAFKA to CBD
+
+        kafkaTemplate.send("document.ettn.waitCbdRegistration", documentKafka);
+
         System.out.println("document.ettn.addBillingOk: " + documentKafka.getId());
     }
 
@@ -66,6 +73,22 @@ public class KafkaListenerComponent {
         ettnController.changeStatusEttn(documentKafka.getId(), REGISTRATION_PROVIDER_FAILED, documentKafka.getDescription());
 
         System.out.println("document.ettn.addBillingError: " + documentKafka.getId());
+    }
+
+    @KafkaHandler
+    @KafkaListener(id = "Document7", topics = { "document.ettn.registrationCbdOk" })
+    public void registrationCbdOk(DocumentKafka documentKafka) {
+        ettnController.changeStatusEttn(documentKafka.getId(), CBD_REGISTRATED, documentKafka.getDescription());
+
+        System.out.println("document.ettn.registrationCbdOk: " + documentKafka.getId());
+    }
+
+    @KafkaHandler
+    @KafkaListener(id = "Document8", topics = { "document.ettn.registrationCbdError" })
+    public void registrationCbdError(DocumentKafka documentKafka) {
+        ettnController.changeStatusEttn(documentKafka.getId(), CBD_REGISTRATION_ERROR, documentKafka.getDescription());
+
+        System.out.println("document.ettn.registrationCbdError: " + documentKafka.getId());
     }
 
 

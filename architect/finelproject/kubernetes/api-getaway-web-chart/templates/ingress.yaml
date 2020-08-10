@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "api-getaway-web-chart.fullname" . }}-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+        {{- range .paths }}
+          - path: {{ . }}($|/)(.*)
+        {{- end }}
+  {{- end }}
+            backend:
+              serviceName: {{ include "api-getaway-web-chart.name" . }}
+              servicePort: {{ .Values.service.port }}

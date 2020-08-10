@@ -21,4 +21,12 @@ public class KafkaListenerComponent {
 
         billingController.calcCreatedEttnById(documentKafka.getId());
     }
+
+    @KafkaHandler
+    @KafkaListener(id = "Billing2", topics = { "document.ettn.registrationCbdError" })
+    public void registrationCbdError(DocumentKafka documentKafka) {
+        billingController.rollbackCalcCreatedEttnById(documentKafka.getId());
+
+        System.out.println("document.ettn.registrationCbdError: " + documentKafka.getId());
+    }
 }

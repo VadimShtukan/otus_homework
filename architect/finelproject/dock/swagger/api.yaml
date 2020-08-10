@@ -22,8 +22,31 @@ tags:
     description: Работа с ЕТТН
   - name: Identity
     description: Регистрация, аутентификация и авторизация пользователей
+  - name: Billing
+    description: Бух. информация (затраты пользователей, долги т.п.)
 
 paths:
+  /billing/debit:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Billing
+      summary: Получить деб. задолженность компании
+      description: Получить деб. задолженность компании
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          type: string
+          name: companyId
+          required: true
+      responses:
+        200:
+          description: Ok
+          schema:
+            $ref: '#/definitions/Debit'
+
   /ettn/transporter:
     put:
       security:
@@ -91,7 +114,7 @@ paths:
           required: true
       responses:
         200:
-          description: Ok
+          description: Общая задолженность компании
           schema:
             $ref: '#/definitions/EttnXml'
   /ettn/originator:
@@ -160,9 +183,16 @@ paths:
         201:
           description: Пользователь создан
           schema:
-            $ref:  '#/definitions/UserLogin'
+            $ref:  '#/definitions/UserRegistration'
 
 definitions:
+  Debit:
+    type: object
+    properties:
+      companyId:
+        type: string
+      amount:
+        type: string
   EttnXml:
     type: object
     properties:

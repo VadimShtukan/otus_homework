@@ -4,6 +4,13 @@ public class UserGroup {
     private String name;
     private String id;
 
+    public UserGroup() {
+    }
+
+    public UserGroup(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

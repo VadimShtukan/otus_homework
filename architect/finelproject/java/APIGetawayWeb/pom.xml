@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>vadim.shtukan.otus.architect.finelproject</groupId>
 	<artifactId>APIGetawayWeb</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>APIGetawayWeb</name>
 	<description>API Gateway for Web Client</description>
 

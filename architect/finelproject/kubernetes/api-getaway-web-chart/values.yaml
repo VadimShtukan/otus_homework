@@ -1,0 +1,18 @@
+
+replicaCount: 1
+
+image:
+  #TODO
+  repository: vadimshtukan/api-getaway-web
+
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  hosts:
+    - host: arch.homework
+#      paths: ["/app"]

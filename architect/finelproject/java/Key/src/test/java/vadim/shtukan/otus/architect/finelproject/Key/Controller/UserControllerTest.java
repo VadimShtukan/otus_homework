@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import vadim.shtukan.otus.architect.finelproject.Key.Model.Company;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.User;
 import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
 import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
 
@@ -33,11 +34,11 @@ class UserControllerTest {
         userRegistration.setLastName("Last name");
         userRegistration.setMobilePhone("343-23-34");
 
-        UserLogin userLogin = userController.registration(userRegistration);
+        UserRegistration userLogin = userController.registration(userRegistration);
 
-        assertNotNull(userLogin.getUserId());
+        assertNotNull(userLogin.getId());
         assertEquals(userRegistration.getSerialNumber(), serialNumber);
-        assertNotNull(userLogin.getJwt());
+        //assertNotNull(userLogin.getJwt());
     }
 
     @Test

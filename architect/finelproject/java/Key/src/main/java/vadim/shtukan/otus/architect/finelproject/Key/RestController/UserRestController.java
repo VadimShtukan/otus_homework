@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vadim.shtukan.otus.architect.finelproject.Key.Controller.UserController;
+import vadim.shtukan.otus.architect.finelproject.Key.Model.User;
 import vadim.shtukan.otus.architect.finelproject.Key.Model.UserLogin;
 import vadim.shtukan.otus.architect.finelproject.Key.Model.UserRegistration;
 
@@ -20,7 +21,7 @@ public class UserRestController {
 
     @PostMapping
     @RequestMapping("registration")
-    public UserLogin createUser(@RequestBody UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public UserRegistration createUser(@RequestBody UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
         //TODO catch exceptions
         return userController.registration(userRegistration);
     }

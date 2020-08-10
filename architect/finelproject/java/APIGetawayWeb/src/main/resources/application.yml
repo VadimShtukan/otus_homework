@@ -5,6 +5,7 @@ app:
   services:
     key: http://127.0.0.1:8001
     document: http://127.0.0.1:8002
+    billing: http://127.0.0.1:8003
 
 ---
 #spring:

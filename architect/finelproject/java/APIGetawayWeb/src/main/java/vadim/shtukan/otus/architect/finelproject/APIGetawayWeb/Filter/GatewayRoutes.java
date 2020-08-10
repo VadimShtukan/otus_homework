@@ -19,6 +19,9 @@ public class GatewayRoutes {
     @Value("${app.services.document}")
     private String ettnHost;
 
+    @Value("${app.services.billing}")
+    private String billingHost;
+
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder, CheckJwtGatewayFilter checkJwtGatewayFilter) {
         return builder.routes()
@@ -55,6 +58,14 @@ public class GatewayRoutes {
                                 //.removeRequestHeader()
                         )
                         .uri(this.ettnHost))
+                .route("billing", r -> r
+                        .path("/billing/**")
+                        .filters(f->f
+                                        .filter(checkJwtGatewayFilter, ROUTE_TO_URL_FILTER_ORDER + 1)
+                                //.addRequestHeader()
+                                //.removeRequestHeader()
+                        )
+                        .uri(this.billingHost))
                 .build();
     }
 }
