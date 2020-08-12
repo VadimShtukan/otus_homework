@@ -31,5 +31,9 @@ kubectl port-forward service/api-getaway-web-chart 8001:80 --address 0.0.0.0
 sudo service docker start
 
 docker login --username=vadimshtukan
+docker build -t vadimshtukan/api-getaway-web-chart:0.0.2 .
+docker push vadimshtukan/api-getaway-web-chart:0.0.2
+
+docker login --username=vadimshtukan
 docker build -t vadimshtukan/key-chart:0.0.1 .
 docker push vadimshtukan/key-chart:0.0.1
