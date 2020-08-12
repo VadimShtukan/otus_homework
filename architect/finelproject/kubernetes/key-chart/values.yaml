@@ -1,0 +1,12 @@
+
+replicaCount: 1
+
+image:
+  repository: vadimshtukan/key-chart
+
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 8001
+

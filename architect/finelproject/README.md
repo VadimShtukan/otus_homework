@@ -3,14 +3,8 @@
 #### Init
 `$ minikube start --cpus=2 --memory=6000m --driver='kvm2'`  
 `$ minikube addons enable ingress`  
-----`$ helm dependency update .\lesson-09-chart`  
 `$ helm repo add bitnami https://charts.bitnami.com/bitnami`
-----`$ helm repo add fusionauth https://fusionauth.github.io/charts`
-
-#### Fusion App
----`$ helm install fusionauth-db -f .\fusionauth-db.yml bitnami/postgresql`  
-----`$ helm install fusionauth-helm -f .\fusionauth.yml fusionauth/fusionauth`  
-
+ 
 #### MongoDb
 `$ helm install mongo-kye -f ./kubernetes/mongodb-key.yml bitnami/mongodb`  
 `$ helm install mongo-document -f ./kubernetes/mongodb-document.yml bitnami/mongodb`  
@@ -29,3 +23,10 @@
 `$ kubectl port-forward service/mongo-document-mongodb 27018:27017 --address 0.0.0.0`
 `$ kubectl port-forward service/redis-master 6379:6379 --address 0.0.0.0`
 `$ kubectl port-forward service/kafka 9092:9092 --address 0.0.0.0`
+
+kubectl port-forward service/api-getaway-web-chart 8001:80 --address 0.0.0.0
+
+#### Docker
+docker login --username=vadimshtukan
+docker build -t vadimshtukan/-chart:0.0.1 .
+docker push vadimshtukan/-chart:0.0.1
