@@ -10,3 +10,6 @@ service:
   port: 80
   targetPort: 8001
 
+ingress:
+  enabled: false
+
