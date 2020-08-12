@@ -1,7 +1,7 @@
 apiVersion: v2
 
 #TODO
-name: api-getaway-web-chart
+name: key-chart
 
 #TODO
 description: A Helm chart for Key

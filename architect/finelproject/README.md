@@ -17,6 +17,7 @@
 
 #### APPs Install
 `$ helm install api-getaway-web-chart ./kubernetes/api-getaway-web-chart`  
+`$ helm install key ./kubernetes/key-chart`  
 
 ---`$ kubectl port-forward service/fusionauth-helm 9012:9012 --address 0.0.0.0`
 `$ kubectl port-forward service/mongo-kye-mongodb 27017:27017 --address 0.0.0.0`
@@ -31,4 +32,4 @@ sudo service docker start
 
 docker login --username=vadimshtukan
 docker build -t vadimshtukan/key-chart:0.0.1 .
-docker push vadimshtukan/-chart:0.0.1
+docker push vadimshtukan/key-chart:0.0.1
