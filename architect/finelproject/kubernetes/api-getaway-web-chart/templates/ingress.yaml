@@ -9,7 +9,7 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          - path: /aaa($|/)(.*)
+          - path: /web($|/)(.*)
             backend:
               serviceName: {{ include "api-getaway-web-chart.name" . }}
               servicePort: {{ .Values.service.port }}
