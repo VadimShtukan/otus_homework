@@ -3,13 +3,13 @@ skinparam sequenceArrowThickness 2
 skinparam maxmessagesize 200
 actor User
 participant "Пользователь" as User
-participant "Web или Delphi Модуль" as FrontEnd
+participant "Web" as FrontEnd
 participant "API Gateway" as Gateway
-participant "Сервис аутентификации пл ЭЦП" as KeyService
+participant "Сервис аутентификации пл ЭЦП (KeyService)" as KeyService
 participant "Сервисы" as XService
 autonumber
 == Аутентификация ==
-User -> FrontEnd: Ввод ключа и пароля к нему
+User -> FrontEnd: Ввод ключа ЭЦП и пароль к нему
 FrontEnd -> Gateway: Отправка подписанного сообщения с ЭЦП
 Gateway -> KeyService: Снять подпись(проверить по отметки времени дату наложения подписи)
 KeyService ->KeyService: Получить информацию о пользователе (из ЭЦП)
