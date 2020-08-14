@@ -49,7 +49,7 @@
 
 ## Архитектурное решение
 Общая схема архитектурного решения:
-![Архитектурное решение](https://raw.githubusercontent.com/VadimShtukan/otus_homework/master/architect/lesson09/lesson-09.jpg)  
+![Архитектурное решение](https://raw.githubusercontent.com/VadimShtukan/otus_homework/master/architect/finelproject/dock/img/arch_schem.png)  
 
 
 ## -- TODO
