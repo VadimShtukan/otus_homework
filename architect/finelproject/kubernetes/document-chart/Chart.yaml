@@ -1,7 +1,7 @@
 apiVersion: v2
 
 #TODO
-name: document-chart-chart
+name: document-chart
 
 #TODO
 description: A Helm chart for document-chart
