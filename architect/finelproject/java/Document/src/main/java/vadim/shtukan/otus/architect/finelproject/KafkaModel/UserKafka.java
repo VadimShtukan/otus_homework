@@ -1,4 +1,4 @@
-package vadim.shtukan.otus.architect.finelproject.KafkaModels;
+package vadim.shtukan.otus.architect.finelproject.KafkaModel;
 
 public class UserKafka {
     private String id;

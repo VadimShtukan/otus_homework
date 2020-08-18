@@ -1,4 +1,4 @@
-package vadim.shtukan.otus.architect.finelproject.KafkaDomain;
+package vadim.shtukan.otus.architect.finelproject.KafkaModel;
 
 public class DocumentKafka {
     private String id;

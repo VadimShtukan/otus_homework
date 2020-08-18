@@ -78,6 +78,7 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 `$ minikube start --cpus=6 --memory=7000m --driver='docker'`  
 `$ minikube addons enable ingress`  
 `$ helm repo add bitnami https://charts.bitnami.com/bitnami`
+`$ helm repo add stable https://kubernetes-charts.storage.googleapis.com`
 `$ helm repo update`
  
 #### MongoDb
@@ -94,7 +95,6 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 `$ helm install prom stable/prometheus-operator -f ./kubernetes/prometheus.yaml --atomic`
 `$ kubectl apply -f ./kubernetes/dashboard.yaml`
 
-kubectl get servicemonitors.monitoring.coreos.com
 
 #### APPs Install
 `$ helm install api-getaway-web-chart ./kubernetes/api-getaway-web-chart`  
@@ -133,8 +133,8 @@ kubectl get servicemonitors.monitoring.coreos.com
 
 kubectl port-forward service/api-getaway-web-chart 8000:80 --address 0.0.0.0
 
-kubectl port-forward service/prom-grafana 9000:80
-kubectl port-forward service/prom-prometheus-operator-prometheus 9090
+kubectl port-forward service/prom-grafana 9000:80  --address 0.0.0.0
+kubectl port-forward service/prom-prometheus-operator-prometheus 9091:9090  --address 0.0.0.0
 
 
 #### Docker
@@ -147,6 +147,10 @@ docker push vadimshtukan/api-getaway-web-chart:0.0.4
 docker login --username=vadimshtukan
 docker build -t vadimshtukan/key-chart:0.0.2 .
 docker push vadimshtukan/key-chart:0.0.2
+
+docker login --username=vadimshtukan
+docker build -t vadimshtukan/document-chart:0.0.1 .
+docker push vadimshtukan/document-chart:0.0.1
 
 PS C:\Users\vadim> kubectl port-forward service/api-getaway-web-chart 8000:80
 error: error upgrading connection: unable to upgrade connection: Authorization error (user=kube-apiserver-kubelet-client, verb=create, resource=nodes, subresource=proxy)

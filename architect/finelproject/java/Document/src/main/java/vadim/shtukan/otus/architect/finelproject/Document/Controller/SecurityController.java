@@ -3,7 +3,7 @@ package vadim.shtukan.otus.architect.finelproject.Document.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
-import vadim.shtukan.otus.architect.finelproject.Document.Domain.User;
+import vadim.shtukan.otus.architect.finelproject.Document.Model.User;
 
 import javax.servlet.http.HttpServletRequest;
 

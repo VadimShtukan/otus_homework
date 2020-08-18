@@ -4,8 +4,7 @@ import io.prometheus.client.Histogram;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
-import vadim.shtukan.otus.architect.finelproject.KafkaModels.UserKafka;
-import vadim.shtukan.otus.architect.finelproject.Key.Models.*;
+import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
 import vadim.shtukan.otus.architect.finelproject.Key.Repository.UserRepository;
 
 import java.security.NoSuchAlgorithmException;

@@ -1,4 +1,4 @@
-package vadim.shtukan.otus.architect.finelproject.Document.Domain;
+package vadim.shtukan.otus.architect.finelproject.Document.Model;
 
 public class Company {
     private String id;

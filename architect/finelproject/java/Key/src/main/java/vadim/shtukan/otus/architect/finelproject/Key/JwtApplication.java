@@ -7,7 +7,7 @@ import org.springframework.kafka.support.converter.DefaultJackson2JavaTypeMapper
 import org.springframework.kafka.support.converter.Jackson2JavaTypeMapper;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
-import vadim.shtukan.otus.architect.finelproject.KafkaModels.UserKafka;
+import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -6,11 +6,11 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
-import vadim.shtukan.otus.architect.finelproject.Document.Domain.DocumentStatus;
-import vadim.shtukan.otus.architect.finelproject.Document.Domain.EttnStage;
-import vadim.shtukan.otus.architect.finelproject.Document.Domain.EttnXml;
-import vadim.shtukan.otus.architect.finelproject.KafkaDomain.DocumentKafka;
-import vadim.shtukan.otus.architect.finelproject.Document.Domain.User;
+import vadim.shtukan.otus.architect.finelproject.Document.Model.DocumentStatus;
+import vadim.shtukan.otus.architect.finelproject.Document.Model.EttnStage;
+import vadim.shtukan.otus.architect.finelproject.Document.Model.EttnXml;
+import vadim.shtukan.otus.architect.finelproject.KafkaModel.DocumentKafka;
+import vadim.shtukan.otus.architect.finelproject.Document.Model.User;
 import vadim.shtukan.otus.architect.finelproject.Document.Repository.EttnRepository;
 
 import java.util.NoSuchElementException;
