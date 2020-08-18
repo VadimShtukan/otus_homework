@@ -17,13 +17,6 @@ import java.util.NoSuchElementException;
 
 @Controller
 public class EttnController {
-    private static final Histogram ettnControllerLatency = Histogram
-            .build()
-            .buckets(0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1, 2)
-            .labelNames("EttnController")
-            .name("key_ett_controller_latency")
-            .help("Время, которое затрачивается на операции с документами.")
-            .register();
     @Autowired
     EttnRepository ettnRepository;
 
@@ -31,8 +24,6 @@ public class EttnController {
     private KafkaTemplate<Object, Object> kafkaTemplate;
 
     public EttnXml addNewEttn(EttnXml ettnXml, User user) {
-        Histogram.Timer requestTimer;
-        requestTimer = ettnControllerLatency.labels("addNewEttn").startTimer();
 
         ettnXml.addUser(user);
         ettnXml.setStatus(DocumentStatus.WAIT_FOR_REGISTRATION_PROVIDER.toString());
@@ -45,19 +36,14 @@ public class EttnController {
         ettnXml = ettnRepository.save(ettnXml);
         kafkaTemplate.send("document.ettn.create", new DocumentKafka(ettnXml.getId()));
 
-        requestTimer.observeDuration();
-
         return ettnXml;
     }
 
     @Cacheable(value = "ettn", key = "#id")
     public EttnXml getXml(String id) {
-        Histogram.Timer requestTimer;
-        requestTimer = ettnControllerLatency.labels("getXml").startTimer();
 
         EttnXml ettnXml = ettnRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Ettn not founded. Id: " + id));
-        requestTimer.observeDuration();
-        
+
         return ettnXml;
     }
 

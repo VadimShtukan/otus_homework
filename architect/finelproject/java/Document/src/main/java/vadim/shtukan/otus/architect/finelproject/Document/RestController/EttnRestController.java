@@ -1,6 +1,7 @@
 package vadim.shtukan.otus.architect.finelproject.Document.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.prometheus.client.Histogram;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("ettn")
 public class EttnRestController {
+    private static final Histogram ettnControllerLatency = Histogram
+            .build()
+            .buckets(0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1, 2)
+            .labelNames("EttnController")
+            .name("key_ett_controller_latency")
+            .help("Время, которое затрачивается на операции с документами.")
+            .register();
+
     @Autowired
     private EttnController ettnController;
 
@@ -45,22 +54,33 @@ public class EttnRestController {
     @RequestMapping("originator")
     @PostMapping
     public EttnXml createXmlOriginator(@RequestBody EttnXml ettnXml, HttpServletRequest httpRequest) throws JsonProcessingException {
+        Histogram.Timer requestTimer;
+        requestTimer = ettnControllerLatency.labels("addNewEttn").startTimer();
+
         //todo move securityController.getUser to filter
         User user = securityController.getUser(httpRequest);
         //todo check user right in object user
 
-        return ettnController.addNewEttn(ettnXml, user);
+        EttnXml ettnXmlResult = ettnController.addNewEttn(ettnXml, user);
+
+        requestTimer.observeDuration();
+
+        return ettnXmlResult;
     }
 
 
     @GetMapping("/{ettnId}")
     public EttnXml getXmlById(@PathVariable String ettnId, HttpServletRequest httpRequest) throws JsonProcessingException {
+        Histogram.Timer requestTimer;
+        requestTimer = ettnControllerLatency.labels("getXml").startTimer();
+
         //todo move securityController.getUser to filter
         User user = securityController.getUser(httpRequest);
         //todo check user right in object user
 
         EttnXml ettnXml = ettnController.getXml(ettnId);
 
+        requestTimer.observeDuration();
         //todo check - имеет ли право этот пользователь запрашивать этот документ?
 
         return ettnXml;

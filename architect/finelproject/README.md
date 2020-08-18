@@ -148,8 +148,8 @@ docker build -t vadimshtukan/key-chart:0.0.2 .
 docker push vadimshtukan/key-chart:0.0.2
 
 docker login --username=vadimshtukan
-docker build -t vadimshtukan/document-chart:0.0.3 .
-docker push vadimshtukan/document-chart:0.0.3
+docker build -t vadimshtukan/document-chart:0.0.4 .
+docker push vadimshtukan/document-chart:0.0.4
 
 docker login --username=vadimshtukan
 docker build -t vadimshtukan/billing-chart:0.0.1 .
@@ -161,8 +161,8 @@ docker build -t vadimshtukan/notification-chart:0.0.1 .
 docker push vadimshtukan/notification-chart:0.0.1
 
 docker login --username=vadimshtukan
-docker build -t vadimshtukan/ettn-gov-sender-chart:0.0.1 .
-docker push vadimshtukan/ettn-gov-sender-chart:0.0.1
+docker build -t vadimshtukan/ettn-gov-sender-chart:0.0.2 .
+docker push vadimshtukan/ettn-gov-sender-chart:0.0.2
 
 PS C:\Users\vadim> kubectl port-forward service/api-getaway-web-chart 8000:80
 error: error upgrading connection: unable to upgrade connection: Authorization error (user=kube-apiserver-kubelet-client, verb=create, resource=nodes, subresource=proxy)
