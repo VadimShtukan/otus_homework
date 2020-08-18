@@ -152,5 +152,9 @@ docker login --username=vadimshtukan
 docker build -t vadimshtukan/document-chart:0.0.3 .
 docker push vadimshtukan/document-chart:0.0.3
 
+docker login --username=vadimshtukan
+docker build -t vadimshtukan/billing-chart:0.0.1 .
+docker push vadimshtukan/billing-chart:0.0.1
+
 PS C:\Users\vadim> kubectl port-forward service/api-getaway-web-chart 8000:80
 error: error upgrading connection: unable to upgrade connection: Authorization error (user=kube-apiserver-kubelet-client, verb=create, resource=nodes, subresource=proxy)
