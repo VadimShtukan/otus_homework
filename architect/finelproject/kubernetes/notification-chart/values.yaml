@@ -10,8 +10,8 @@ metrics:
 
 service:
   type: NodePort
-  port: 8002
-  targetPort: 8002
+  port: 8005
+  targetPort: 8005
 
 ingress:
   enabled: false
