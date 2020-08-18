@@ -133,6 +133,9 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 
 kubectl port-forward service/api-getaway-web-chart 8000:80 --address 0.0.0.0
 
+
+kubectl port-forward service/notification-chart  8005:8005 --address 0.0.0.0
+
 kubectl port-forward service/prom-grafana 9000:80  --address 0.0.0.0
 kubectl port-forward service/prom-prometheus-operator-prometheus 9091:9090  --address 0.0.0.0
 
