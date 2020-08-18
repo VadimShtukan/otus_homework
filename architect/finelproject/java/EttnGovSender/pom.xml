@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>vadim.shtukan.otus.architect.finelproject</groupId>
 	<artifactId>EttnGovSender</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>EttnGovSender</name>
 	<description>Ettn Gov Sender</description>
 
