@@ -1,0 +1,18 @@
+
+replicaCount: 1
+
+image:
+  repository: vadimshtukan/notification-chart
+
+metrics:
+  serviceMonitor:
+    enabled: false
+
+service:
+  type: NodePort
+  port: 8002
+  targetPort: 8002
+
+ingress:
+  enabled: false
+

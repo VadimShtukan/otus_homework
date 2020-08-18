@@ -1,0 +1,13 @@
+apiVersion: v2
+
+#TODO
+name: document-chart-chart
+
+#TODO
+description: A Helm chart for document-chart
+
+type: application
+version: 0.0.1
+
+#TODO
+appVersion: 0.0.1

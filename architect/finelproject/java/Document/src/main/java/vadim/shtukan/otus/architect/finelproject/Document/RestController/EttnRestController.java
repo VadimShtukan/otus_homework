@@ -6,9 +6,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import vadim.shtukan.otus.architect.finelproject.Document.Controller.EttnController;
 import vadim.shtukan.otus.architect.finelproject.Document.Controller.SecurityController;
-import vadim.shtukan.otus.architect.finelproject.Document.Models.EttnXml;
-import vadim.shtukan.otus.architect.finelproject.Document.Models.User;
-import vadim.shtukan.otus.architect.finelproject.Document.Models.UserGroup;
+import vadim.shtukan.otus.architect.finelproject.Document.Domain.EttnXml;
+import vadim.shtukan.otus.architect.finelproject.Document.Domain.User;
+import vadim.shtukan.otus.architect.finelproject.Document.Domain.UserGroup;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -6,11 +6,11 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import vadim.shtukan.otus.architect.finelproject.Document.Controller.EttnController;
-import vadim.shtukan.otus.architect.finelproject.KafkaModel.DocumentKafka;
-import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
-import vadim.shtukan.otus.architect.finelproject.Document.Models.UserGroup;
+import vadim.shtukan.otus.architect.finelproject.KafkaDomain.DocumentKafka;
+import vadim.shtukan.otus.architect.finelproject.KafkaDomain.UserKafka;
+import vadim.shtukan.otus.architect.finelproject.Document.Domain.UserGroup;
 
-import static vadim.shtukan.otus.architect.finelproject.Document.Models.DocumentStatus.*;
+import static vadim.shtukan.otus.architect.finelproject.Document.Domain.DocumentStatus.*;
 
 //todo delete it
 @Component

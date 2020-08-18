@@ -9,9 +9,9 @@ import org.springframework.kafka.support.converter.DefaultJackson2JavaTypeMapper
 import org.springframework.kafka.support.converter.Jackson2JavaTypeMapper;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
-import vadim.shtukan.otus.architect.finelproject.KafkaModel.DocumentKafka;
-import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
-import vadim.shtukan.otus.architect.finelproject.Document.Models.UserGroup;
+import vadim.shtukan.otus.architect.finelproject.KafkaDomain.DocumentKafka;
+import vadim.shtukan.otus.architect.finelproject.KafkaDomain.UserKafka;
+import vadim.shtukan.otus.architect.finelproject.Document.Domain.UserGroup;
 
 import java.util.HashMap;
 import java.util.Map;

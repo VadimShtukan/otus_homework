@@ -19,8 +19,7 @@
 - Компания из списка (если ее нет, то он создает ее).  
 - Серийный номер ключа пользователя, под которым он будет входить в систему.  
 Кнопка создать пользователя, по нажатию которой должен создаться пользователь, пользователь должен будет проинформирован по электронной почет, что для него создана учетная запись с инструкцией как войти в систему при помощи своей ЭЦП.  
-#### --- TODO Скриншот - ввод данных пользователя.  
-
+ 
 ### Создание еТТН
 Отправитель заходит в систему при помощи своей ЭЦП, переходи в пункт меню "Создать еТТН".  
 Вводит все необходимые данные форме (номенклатура товара, количество, вес, цена, перевозчик груза, получатель груза, и т.д.) и кнопка "Создать еТТН"   
@@ -73,11 +72,13 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 
 # Развертывание
 Для развертывания используется kubernetes с шаблонизированным helm   
-### Развертывание
+
 #### Init
-`$ minikube start --cpus=2 --memory=6000m --driver='kvm2'`  
+`$ minikube start --cpus=6 --memory=7000m --driver='kvm2'`  
+`$ minikube start --cpus=6 --memory=7000m --driver='docker'`  
 `$ minikube addons enable ingress`  
 `$ helm repo add bitnami https://charts.bitnami.com/bitnami`
+`$ helm repo update`
  
 #### MongoDb
 `$ helm install mongo-kye -f ./kubernetes/mongodb-key.yml bitnami/mongodb`  
@@ -89,13 +90,20 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 #### Kafka
 `$ helm install -f ./kubernetes/kafka.yml kafka bitnami/kafka`
 
+#### Monitoring
+`$ helm install prom stable/prometheus-operator -f ./kubernetes/prometheus.yaml --atomic`
+`$ kubectl apply -f ./kubernetes/dashboard.yaml`
+
+kubectl get servicemonitors.monitoring.coreos.com
+
 #### APPs Install
 `$ helm install api-getaway-web-chart ./kubernetes/api-getaway-web-chart`  
-`$ helm install key ./kubernetes/key-chart`  
-`$ helm install key ./kubernetes/document-chart`  
-`$ helm install key ./kubernetes/notification-chart`  
-`$ helm install key ./kubernetes/billing-chart`  
-`$ helm install key ./kubernetes/ettn-gov-sender-chart`  
+`$ kubectl port-forward service/api-getaway-web-chart 8000:80 --address 0.0.0.0`
+`$ helm install key-chart ./kubernetes/key-chart`  
+`$ helm install document-chart ./kubernetes/document-chart`  
+`$ helm install notification-chart ./kubernetes/notification-chart`  
+`$ helm install billing-chart ./kubernetes/billing-chart`  
+`$ helm install ettn-gov-sender-chart ./kubernetes/ettn-gov-sender-chart`  
 
 
 # Тесты в посмене
@@ -123,15 +131,22 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 `$ kubectl port-forward service/redis-master 6379:6379 --address 0.0.0.0`
 `$ kubectl port-forward service/kafka 9092:9092 --address 0.0.0.0`
 
-kubectl port-forward service/api-getaway-web-chart 8001:80 --address 0.0.0.0
+kubectl port-forward service/api-getaway-web-chart 8000:80 --address 0.0.0.0
+
+kubectl port-forward service/prom-grafana 9000:80
+kubectl port-forward service/prom-prometheus-operator-prometheus 9090
+
 
 #### Docker
 sudo service docker start
 
 docker login --username=vadimshtukan
-docker build -t vadimshtukan/api-getaway-web-chart:0.0.2 .
-docker push vadimshtukan/api-getaway-web-chart:0.0.2
+docker build -t vadimshtukan/api-getaway-web-chart:0.0.4 .
+docker push vadimshtukan/api-getaway-web-chart:0.0.4
 
 docker login --username=vadimshtukan
-docker build -t vadimshtukan/key-chart:0.0.1 .
-docker push vadimshtukan/key-chart:0.0.1
+docker build -t vadimshtukan/key-chart:0.0.2 .
+docker push vadimshtukan/key-chart:0.0.2
+
+PS C:\Users\vadim> kubectl port-forward service/api-getaway-web-chart 8000:80
+error: error upgrading connection: unable to upgrade connection: Authorization error (user=kube-apiserver-kubelet-client, verb=create, resource=nodes, subresource=proxy)

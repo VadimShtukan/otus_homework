@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "document-chart.fullname" . }}
+  labels:
+    {{- include "document-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "document-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "document-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.targetPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.service.targetPort }}
+              path: /actuator/health
+            initialDelaySeconds: 30
+            periodSeconds: 50
+            timeoutSeconds: 20
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.service.targetPort }}
+              path: /actuator/health
+            initialDelaySeconds: 30
+            periodSeconds: 20

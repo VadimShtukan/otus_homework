@@ -1,0 +1,18 @@
+
+replicaCount: 1
+
+image:
+  repository: vadimshtukan/ettn-gov-sender-chart
+
+metrics:
+  serviceMonitor:
+    enabled: false
+
+service:
+  type: NodePort
+  port: 8004
+  targetPort: 8004
+
+ingress:
+  enabled: false
+

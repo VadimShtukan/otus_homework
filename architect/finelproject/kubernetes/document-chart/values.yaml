@@ -1,0 +1,18 @@
+
+replicaCount: 1
+
+image:
+  repository: vadimshtukan/document-chart
+
+metrics:
+  serviceMonitor:
+    enabled: true
+
+service:
+  type: NodePort
+  port: 8002
+  targetPort: 8002
+
+ingress:
+  enabled: false
+

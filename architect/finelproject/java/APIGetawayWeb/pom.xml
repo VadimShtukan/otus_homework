@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>vadim.shtukan.otus.architect.finelproject</groupId>
 	<artifactId>APIGetawayWeb</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.4</version>
 	<name>APIGetawayWeb</name>
 	<description>API Gateway for Web Client</description>
 
@@ -20,6 +20,11 @@
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-prometheus -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>

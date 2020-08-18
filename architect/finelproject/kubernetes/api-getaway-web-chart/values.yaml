@@ -4,6 +4,9 @@ replicaCount: 1
 image:
   repository: vadimshtukan/api-getaway-web-chart
 
+metrics:
+  serviceMonitor:
+    enabled: true
 
 service:
   type: NodePort

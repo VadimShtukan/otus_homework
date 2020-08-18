@@ -1,0 +1,13 @@
+apiVersion: v2
+
+#TODO
+name: ettn-gov-sender-chart
+
+#TODO
+description: A Helm chart for ettn-gov-sender
+
+type: application
+version: 0.0.1
+
+#TODO
+appVersion: 0.0.1

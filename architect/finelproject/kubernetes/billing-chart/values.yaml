@@ -1,0 +1,18 @@
+
+replicaCount: 1
+
+image:
+  repository: vadimshtukan/billing-chart
+
+metrics:
+  serviceMonitor:
+    enabled: false
+
+service:
+  type: NodePort
+  port: 8003
+  targetPort: 8003
+
+ingress:
+  enabled: false
+

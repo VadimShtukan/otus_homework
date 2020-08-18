@@ -1,10 +1,11 @@
 package vadim.shtukan.otus.architect.finelproject.Key.Controller;
 
+import io.prometheus.client.Histogram;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
-import vadim.shtukan.otus.architect.finelproject.KafkaModel.UserKafka;
-import vadim.shtukan.otus.architect.finelproject.Key.Model.*;
+import vadim.shtukan.otus.architect.finelproject.KafkaModels.UserKafka;
+import vadim.shtukan.otus.architect.finelproject.Key.Models.*;
 import vadim.shtukan.otus.architect.finelproject.Key.Repository.UserRepository;
 
 import java.security.NoSuchAlgorithmException;
@@ -15,6 +16,14 @@ import java.util.NoSuchElementException;
 
 @Controller
 public class UserController {
+    private static final Histogram userControllerLatency = Histogram
+            .build()
+            .buckets(0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 1, 2)
+            .labelNames("UserController")
+            .name("key_user_controller_latency")
+            .help("Время, которое затрачивается на операции с пользователями.")
+            .register();
+
     @Autowired
     private UserRepository userRepository;
 
@@ -31,6 +40,9 @@ public class UserController {
     }
 
     public UserRegistration registration(UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        Histogram.Timer requestTimer_createUserLatency;
+        requestTimer_createUserLatency = userControllerLatency.labels("registration").startTimer();
+
         //todo validate userRegistration
         //todo check if user has been registrated
         //todo add clear group
@@ -49,6 +61,8 @@ public class UserController {
         UserRegistration user = userRepository.save(userRegistration);
 
         kafkaTemplate.send("user.new", new UserKafka(user.getId()));
+
+        requestTimer_createUserLatency.observeDuration();
 
         return user;
     }
@@ -69,10 +83,17 @@ public class UserController {
 
 
     public UserLogin login(UserRegistration userRegistration) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        Histogram.Timer requestTimer_loginUserLatency;
+        requestTimer_loginUserLatency = userControllerLatency.labels("login").startTimer();
+
         String serialNumber = euSignature.verifySignature(userRegistration.getSignature());
 
         List<User> userLoginningList = userRepository.findBySerialNumber(serialNumber);
 
-        return this.getNewJwtForUser(userLoginningList.get(userLoginningList.size() - 1));
+        UserLogin userLogin = this.getNewJwtForUser(userLoginningList.get(userLoginningList.size() - 1));
+
+        requestTimer_loginUserLatency.observeDuration();
+
+        return userLogin;
     }
 }

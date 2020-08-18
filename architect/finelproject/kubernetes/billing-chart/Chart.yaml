@@ -1,0 +1,13 @@
+apiVersion: v2
+
+#TODO
+name: billing-chart
+
+#TODO
+description: A Helm chart for billing
+
+type: application
+version: 0.0.1
+
+#TODO
+appVersion: 0.0.1
