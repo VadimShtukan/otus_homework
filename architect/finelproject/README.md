@@ -53,7 +53,7 @@
 
 ### Взаимодействие с фронтендом  
 Бэкэнд с фронтэндом взаимодействует по средствам REST  
-API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homework/blob/master/architect/finelproject/dock/swagger/api.yaml  
+API: https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VadimShtukan/otus_homework/master/architect/finelproject/dock/swagger/api.yaml
 
 ### Межсервисное взаимодействие  
 Синхронное - REST API  
