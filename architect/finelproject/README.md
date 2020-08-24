@@ -1,5 +1,6 @@
 # О проекте Система провайдера электронных транспортных накладных.  
-#### --TODO
+Данный проект предназначен для формирования товарно-транспортных накладных для перемещения товаров по территории Украины в электронном виде.  
+С 1 января 2021 года такие электронные накладные станут обязательными для перевоза любого коммерческого груза и будет контролироваться полицией.  
 
 # Пользовательская история.    
 ###  Участник системы:  
@@ -56,7 +57,7 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 
 ### Межсервисное взаимодействие  
 Синхронное - REST API  
-Синхронное - через Kafka. Для того, что бы всегда получать актуальную информацию при отправке сообщений в очередь отправляется только событие и идентификатор без доп. данных. Если сервису нужно получить больше данных, то он по идентификатору запрашивает данные с нужного сервису.  
+Асинхронное - через Kafka. Для того, что бы всегда получать актуальную информацию при отправке сообщений в очередь отправляется только событие и идентификатор без доп. данных. Если сервису нужно получить больше данных, то он по идентификатору запрашивает данные с нужного сервису.  
 
 ### Аутентификация/авторизация пользователей.
 Вместо логина и пароля используется ЭЦП - подписанный код компании. В качестве идентификатора пользователя в БД Key используется регистрационный ключ пользователя, который получается в результате успешного снятия подписи. Если аутентификация прошла успешно, Key сервис генерирует JWT с зашитой внутри информацией о пользователе со списком групп, в которую входит пользователь. По этому списку групп, дальше проходит авторизация пользователя в сервисах.   
@@ -67,15 +68,49 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 В качестве кэша используется централизованный кэш на Redis. Кэшируются данные в сервисах Key(получение информации о пользователе) и Document(Получение информации о eTTN)  
 
 
-#### -- TODO
-4. Паттерн сага
+# Паттерн Сага
+Для того, чты бы оплата за еТТН взымалась только в случае успешного принятия документа в проекте используется паттерн Сага.  
+Он работает следующим образом:  
+1. При создании новой еТТН в сервисе Document, он рассылает об этом сообщение в Message Broker (Kafka).  
+2. Информацию о новой еТТН получает сервис Billing, который анализирует возможность создания данным пользователем eTTN. Если такой возможности нет, то сервис отправляет отказ в регистрации документа. Если всё ОК, то сервис добавляет определенную сумму в дебеторскую задолженность компонии пользователя и отправляет(через Kafka) об успешной регистрации у себя документа.  
+3. Информацию об успешной регистрации документа(в сервисе Billing) получает сервис EttnGovSender, которые отпраляет запрос в ЦБД. Если регистрация в ЦБД прошла успешно, то сервис(через Kafka) сообщает об этом и процесс можно считать оконченным. Если есть ошибки при регистрации в ЦБД, то сервис сообщает об этом.  
+4. Информацию об неудачной регистрации в ЦБД получает сервис Billing делает откат транзакции (удаляет дебеторскую задолженность для данной  eTTN).  
+
+# Тесты в посмене
+https://www.getpostman.com/collections/f17592cf3267c1a2781b  
+
+# Метрики
+Метрики снимаются с APIGateway. Снимаются такие показатели:  
+- количество 500, 
+- количество 200,  
+- время выполнения каждого запроса от пользователей.   
+![Последоватьльность аутентификации](https://github.com/VadimShtukan/otus_homework/blob/master/architect/finelproject/dock/img/document_load.jpg)  
+
+# Нагрузочное тестирование
+Нагрузочное тестирование было реализовано при помощи Gatling.
+#### Результаты тестирования:
+##### Сервис Document:  
+![Последоватьльность аутентификации](https://github.com/VadimShtukan/otus_homework/blob/master/architect/finelproject/dock/img/document_stress.jpg)  
+
+##### Сервис Key:  
+![Последоватьльность аутентификации](https://github.com/VadimShtukan/otus_homework/blob/master/architect/finelproject/dock/img/key_stress.jpg)  
+
+Были выявлены следующие ограничения:  
+- Сервис Document: максимальное количество пользователей - 68 пользователей/сек.  
+- Сервис Key: максимальное количество пользователей - 9 пользователей/сек.  
+
+Был произведено тестирование сервиса Document с предпологаемой нагрузкой до 40 пользователей в сек:  
+![Последоватьльность аутентификации](https://github.com/VadimShtukan/otus_homework/blob/master/architect/finelproject/dock/img/document_load.jpg)  
+
+Результат:  
+![Последоватьльность аутентификации](https://github.com/VadimShtukan/otus_homework/blob/master/architect/finelproject/dock/img/gatling.jpg)  
+
 
 # Развертывание
 Для развертывания используется kubernetes с шаблонизированным helm   
 
 #### Init
-`$ minikube start --cpus=6 --memory=7000m --driver='kvm2'`  
-`$ minikube start --cpus=6 --memory=7000m --driver='docker'`  
+`$ minikube start --cpus=2 --memory=6000m --driver='kvm2'`  
 `$ minikube addons enable ingress`  
 `$ helm repo add bitnami https://charts.bitnami.com/bitnami`
 `$ helm repo add stable https://kubernetes-charts.storage.googleapis.com`
@@ -105,64 +140,8 @@ API: https://petstore.swagger.io/?url=https://github.com/VadimShtukan/otus_homew
 `$ helm install billing-chart ./kubernetes/billing-chart`  
 `$ helm install ettn-gov-sender-chart ./kubernetes/ettn-gov-sender-chart`  
 
-
-# Тесты в посмене
-#### -- TODO дать ссылку
-
-# Метрики
-#### -- TODO
-
-# Нагрузочное тестирование
-#### -- TODO
-
 # Ограничения по проекту
 Данный проект является демонстрацией архитектурного решения, и только.  
 В нем не реализована, в полной мере, бизнес логика проекта еТТН, и намеренно искажены процесс этапов перевозки груза, для того что бы не раскрывать детали данного проекта.  
 Так же не реализованы обработки ошибок и не реализованы все механизмы по обеспечению безопасности.  
 Данный проект нельзя использовать, без доработок, в реальном проекте!  
-
-
----------
-# Installation
-
----`$ kubectl port-forward service/fusionauth-helm 9012:9012 --address 0.0.0.0`
-`$ kubectl port-forward service/mongo-kye-mongodb 27017:27017 --address 0.0.0.0`
-`$ kubectl port-forward service/mongo-document-mongodb 27018:27017 --address 0.0.0.0`
-`$ kubectl port-forward service/redis-master 6379:6379 --address 0.0.0.0`
-`$ kubectl port-forward service/kafka 9092:9092 --address 0.0.0.0`
-
-kubectl port-forward service/api-getaway-web-chart 8000:80 --address 0.0.0.0
-kubectl port-forward service/prom-grafana 9000:80  --address 0.0.0.0
-kubectl port-forward service/prom-prometheus-operator-prometheus 9091:9090  --address 0.0.0.0
-
-
-#### Docker
-sudo service docker start
-
-docker login --username=vadimshtukan
-docker build -t vadimshtukan/api-getaway-web-chart:0.0.4 .
-docker push vadimshtukan/api-getaway-web-chart:0.0.4
-
-docker login --username=vadimshtukan
-docker build -t vadimshtukan/key-chart:0.0.2 .
-docker push vadimshtukan/key-chart:0.0.2
-
-docker login --username=vadimshtukan
-docker build -t vadimshtukan/document-chart:0.0.4 .
-docker push vadimshtukan/document-chart:0.0.4
-
-docker login --username=vadimshtukan
-docker build -t vadimshtukan/billing-chart:0.0.1 .
-docker push vadimshtukan/billing-chart:0.0.1
-
-
-docker login --username=vadimshtukan
-docker build -t vadimshtukan/notification-chart:0.0.1 .
-docker push vadimshtukan/notification-chart:0.0.1
-
-docker login --username=vadimshtukan
-docker build -t vadimshtukan/ettn-gov-sender-chart:0.0.2 .
-docker push vadimshtukan/ettn-gov-sender-chart:0.0.2
-
-PS C:\Users\vadim> kubectl port-forward service/api-getaway-web-chart 8000:80
-error: error upgrading connection: unable to upgrade connection: Authorization error (user=kube-apiserver-kubelet-client, verb=create, resource=nodes, subresource=proxy)
